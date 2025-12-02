@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anna Craig Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* Reset & font */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Work Sans', sans-serif;
+      letter-spacing: 3px;
+    }
+
+    body {
+      line-height: 1.5;
+      color: #871103;
+      background: #F0F8FF;
+      font-size: 1rem;
+      overflow-x: hidden;
+    }
+
+    /* Full screen background */
+    .background-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 0;
+    }
+
+    .background-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+    }
+
+    /* Content overlay */
+    .content-overlay {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .text-container {
+      text-align: center;
+      padding: 60px 80px;
+    }
+
+    .text-container h1 {
+      font-size: 2.5rem;
+      font-weight: normal;
+      margin-bottom: 10px;
+       color: #ffffff;
+        letter-spacing: 8px; 
+    }
+
+    .text-container .subtitle {
+      font-size: 1rem;
+      font-weight: lighter;
+      margin-bottom: 30px;
+       color: #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      font-size: 0.9rem;
+       color: #ffffff;
+    }
+
+    .nav-links button {
+      background: none;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      padding: 0;
+      font-size: 0.9rem;
+      font-family: 'Work Sans', sans-serif;
+      letter-spacing: 3px;
+      transition: opacity 0.3s;
+    }
+
+    .nav-links button:hover {
+      opacity: 0.6;
+    }
+
+    /* Modal/Popup Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+  .modal-content {
+  background: rgba(240, 248, 255, 0.90);
+  color: #871103;
+  padding: 40px 60px;
+  border-radius: 0;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  text-align: center;
+}
+
+#modal-contact .modal-content,
+#modal-clients .modal-content {
+  text-align: center;
+  padding: 15px 25px;
+}
+
+#modal-contact .modal-content {
+  max-width: 300px;
+}
+
+#modal-clients .modal-content {
+  max-width: 300px;
+}
+
+    .modal-content p {
+      margin-bottom: 5px;
+      line-height: 1.2;
+      font-weight: lighter;
+      font-size: 1rem;
+    }
+
+    .modal-content a {
+      color: #871103;
+      text-decoration: none;
+    }
+
+    .modal-content a:hover {
+      opacity: 0.8;
+    }
+
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #871103;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+
+    .close:hover {
+      opacity: 0.6;
+    }
+
+    .location-info {
+      margin-top: 30px;
+    }
+
+    .clients-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .clients-list li {
+      margin-bottom: 10px;
+      font-weight: lighter;
+    }
+
+    /* Mobile responsive styles */
+    @media (max-width: 768px) {
+      .background-container img {
+    object-position: 80% 60%;  
+  }
+      .text-container {
+        padding: 40px 30px;
+        width: 90%;
+      }
+
+      .text-container h1 {
+        font-size: 2rem;
+      }
+
+      .text-container .subtitle {
+        font-size: 0.9rem;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .modal-content {
+        padding: 30px 25px;
+        width: 95%;
+      }
+
+      .modal-content p {
+        margin-bottom: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Full screen background -->
+  <div class="background-container">
+    <img src="images/photo20.jpeg" alt="Background">
+  </div>
+
+  <!-- Content overlay -->
+  <div class="content-overlay">
+    <div class="text-container">
+      <h1>AnnaCraig</h1>
+      <div class="subtitle">Director</div>
+      <div class="nav-links">
+        <button id="open-about">about</button>
+        <button id="open-contact">contact</button>
+        <button id="open-clients">clients</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup Modals -->
+  <div id="modal-about" class="modal">
+    <div class="modal-content">
+      <p>Multidisciplinary artist exploring colour, form and the subtleties within everyday objects and moments.</p>
+      <div class="location-info">
+        <p>b. 1995</p>
+        <p>Based in St Leonards-on-Sea / London</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-contact" class="modal">
+    <div class="modal-content">
+      <p><a href="mailto:acshapes@gmail.com">acshapes@gmail.com</a></p>
+      <p><a href="https://www.instagram.com/acshapes/" target="_blank">@acshapes</a></p>
+    </div>
+  </div>
+
+  <div id="modal-clients" class="modal">
+    <div class="modal-content">
+      <ul class="clients-list">
+        <li>Six Dots Design</li>
+        <li>BFI</li>
+        <li>Sol Paradise</li>
+        <li>st.arta</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Open modals
+    document.getElementById('open-about').onclick = () => {
+      document.getElementById('modal-about').style.display = 'flex';
+    };
+    document.getElementById('open-contact').onclick = () => {
+      document.getElementById('modal-contact').style.display = 'flex';
+    };
+    document.getElementById('open-clients').onclick = () => {
+      document.getElementById('modal-clients').style.display = 'flex';
+    };
+
+    // Close modals
+    document.querySelectorAll('.close').forEach(btn => {
+      btn.onclick = () => {
+        document.getElementById(btn.dataset.close).style.display = 'none';
+      };
+    });
+
+    // Close when clicking outside
+    window.onclick = (e) => {
+      if (e.target.classList.contains('modal')) {
+        e.target.style.display = 'none';
+      }
+    };
+  </script>
+</body>
+</html>
