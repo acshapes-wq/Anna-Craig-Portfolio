@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anna Craig Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>Anna Craig</title>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;200;300;400;500&display=swap" rel="stylesheet">
   <style>
-    /* Reset & font */
     * {
       margin: 0;
       padding: 0;
@@ -23,25 +22,21 @@
       overflow-x: hidden;
     }
 
-    /* Full screen background */
+    /* === HOMEPAGE === */
     .background-container {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100%; height: 100vh;
       z-index: 0;
       background: #2a2a2a;
     }
 
     .background-container video {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       object-fit: cover;
       transform: scale(1.1);
     }
 
-    /* Content overlay */
     .content-overlay {
       position: relative;
       z-index: 1;
@@ -62,14 +57,13 @@
       margin-bottom: 10px;
       color: #ffffff;
       letter-spacing: 8px;
-      font-family: 'Work Sans', sans-serif;
     }
 
     .text-container .subtitle {
       font-size: 1rem;
       font-weight: lighter;
       margin-bottom: 30px;
-       color: #ffffff;
+      color: #ffffff;
     }
 
     .nav-links {
@@ -77,7 +71,7 @@
       gap: 30px;
       justify-content: center;
       font-size: 0.9rem;
-       color: #ffffff;
+      color: #ffffff;
     }
 
     .nav-links button {
@@ -92,48 +86,37 @@
       transition: opacity 0.3s;
     }
 
-    .nav-links button:hover {
-      opacity: 0.6;
-    }
+    .nav-links button:hover { opacity: 0.6; }
 
-    /* Modal/Popup Styles */
+    /* === EXISTING MODALS === */
     .modal {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
       justify-content: center;
       align-items: center;
-      z-index: 1000;
+      z-index: 2000;
     }
 
-  .modal-content {
-  background: rgba(240, 248, 255, 0.90);
-  color: #871103;
-  padding: 40px 60px;
-  border-radius: 0;
-  max-width: 500px;
-  width: 90%;
-  position: relative;
-  text-align: center;
-}
+    .modal-content {
+      background: rgba(240, 248, 255, 0.90);
+      color: #871103;
+      padding: 40px 60px;
+      border-radius: 0;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+      text-align: center;
+    }
 
-#modal-contact .modal-content,
-#modal-clients .modal-content {
-  text-align: center;
-  padding: 15px 25px;
-}
-
-#modal-contact .modal-content {
-  max-width: 300px;
-}
-
-#modal-clients .modal-content {
-  max-width: 300px;
-}
+    #modal-contact .modal-content,
+    #modal-about .modal-content {
+      text-align: center;
+      padding: 15px 25px;
+      max-width: 300px;
+    }
 
     .modal-content p {
       margin-bottom: 5px;
@@ -148,14 +131,11 @@
       text-decoration: none;
     }
 
-    .modal-content a:hover {
-      opacity: 0.8;
-    }
+    .modal-content a:hover { opacity: 0.8; }
 
     .close {
       position: absolute;
-      top: 15px;
-      right: 25px;
+      top: 15px; right: 25px;
       font-size: 28px;
       font-weight: bold;
       color: #871103;
@@ -163,57 +143,167 @@
       transition: opacity 0.3s;
     }
 
-    .close:hover {
-      opacity: 0.6;
+    .close:hover { opacity: 0.6; }
+
+    .location-info { margin-top: 30px; }
+
+    /* === WORK MODAL === */
+    #modal-work {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #0d0d0d;
+      z-index: 1000;
+      overflow: hidden;
     }
 
-    .location-info {
-      margin-top: 30px;
+    #close-work {
+      position: fixed;
+      top: 22px; right: 28px;
+      background: none; border: none;
+      color: rgba(255,255,255,0.35);
+      font-size: 0.65rem;
+      font-family: 'Work Sans', sans-serif;
+      letter-spacing: 3px;
+      cursor: pointer;
+      z-index: 1003;
+      transition: opacity 0.3s;
+      text-transform: lowercase;
     }
 
-    .clients-list {
-      list-style: none;
-      padding: 0;
+    #close-work:hover { opacity: 0.15; }
+
+    /* Moodboard - desktop */
+    #moodboard {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      overflow: hidden;
     }
 
-    .clients-list li {
-      margin-bottom: 10px;
-      font-weight: lighter;
-      color: #1a1a1a;
-      font-size: 0.75rem;
+    .mood-item {
+      position: absolute;
+      overflow: hidden;
+      cursor: default;
+      transition:
+        opacity 0.5s ease,
+        transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
-    /* Mobile responsive styles */
+    .mood-item img,
+    .mood-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .mood-item.faded {
+      opacity: 0.08;
+    }
+
+    .mood-item.highlighted {
+      opacity: 1;
+      z-index: 50 !important;
+    }
+
+    /* Project list - bottom left */
+    #project-list {
+      position: fixed;
+      bottom: 30px; left: 30px;
+      z-index: 1002;
+      line-height: 1;
+    }
+
+    .proj-item {
+      margin-bottom: 6px;
+    }
+
+    .proj-name {
+      color: rgba(255,255,255,0.4);
+      font-size: 0.58rem;
+      font-weight: 300;
+      letter-spacing: 2.5px;
+      font-family: 'Work Sans', sans-serif;
+      cursor: pointer;
+      display: inline;
+      transition: color 0.3s;
+    }
+
+    .proj-name:hover,
+    .proj-name.active {
+      color: rgba(255,255,255,0.85);
+    }
+
+    .proj-credit {
+      color: rgba(255,255,255,0.18);
+      font-size: 0.48rem;
+      font-weight: 200;
+      letter-spacing: 2px;
+      font-family: 'Work Sans', sans-serif;
+      display: none;
+      margin-left: 6px;
+    }
+
+    .proj-item:hover .proj-credit {
+      display: inline;
+    }
+
+    /* === MOBILE === */
     @media (max-width: 768px) {
-      .background-container video {
-        object-fit: cover;
-        transform: scale(1.1);
-      }
       .text-container {
         padding: 40px 30px;
         width: 90%;
       }
+      .text-container h1 { font-size: 2rem; }
+      .text-container .subtitle { font-size: 0.9rem; }
+      .nav-links { flex-direction: column; gap: 15px; }
+      .modal-content { padding: 30px 25px; width: 95%; }
+      .modal-content p { margin-bottom: 15px; }
 
-      .text-container h1 {
-        font-size: 2rem;
+      /* Work modal - 2 column grid on mobile */
+      #modal-work {
+        overflow-y: auto;
       }
 
-      .text-container .subtitle {
-        font-size: 0.9rem;
+      #moodboard {
+        position: relative !important;
+        height: auto !important;
+        overflow: visible !important;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 3px;
+        padding: 52px 3px 140px;
       }
 
-      .nav-links {
-        flex-direction: column;
-        gap: 15px;
+      .mood-item {
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        width: 100% !important;
+        height: 44vw !important;
+        transform: none !important;
+        transition: opacity 0.4s ease !important;
       }
 
-      .modal-content {
-        padding: 30px 25px;
-        width: 95%;
+      #project-list {
+        bottom: 14px;
+        left: 14px;
+        right: 55px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px 12px;
+        align-items: center;
       }
 
-      .modal-content p {
-        margin-bottom: 15px;
+      .proj-item { margin-bottom: 0; }
+      .proj-name { font-size: 0.46rem; }
+      .proj-credit { display: none !important; }
+
+      #close-work {
+        top: 14px;
+        right: 16px;
       }
     }
   </style>
@@ -221,7 +311,7 @@
 
 <body>
 
-  <!-- Full screen background video -->
+  <!-- Homepage video background -->
   <div class="background-container">
     <video autoplay muted loop playsinline preload="auto">
       <source src="video1.mov" type="video/mp4">
@@ -229,22 +319,23 @@
     </video>
   </div>
 
-  <!-- Content overlay -->
+  <!-- Homepage content -->
   <div class="content-overlay">
     <div class="text-container">
       <h1>AnnaCraig</h1>
       <div class="subtitle">Art Director</div>
       <div class="nav-links">
         <button id="open-about">about</button>
+        <button id="open-work">work</button>
         <button id="open-contact">contact</button>
-        <button id="open-clients">clients</button>
       </div>
     </div>
   </div>
 
-  <!-- Popup Modals -->
+  <!-- About Modal -->
   <div id="modal-about" class="modal">
     <div class="modal-content">
+      <span class="close" data-close="modal-about">&times;</span>
       <p>Visual artist and art director working across photography, set styling and installation</p>
       <div class="location-info">
         <p>b. 1995</p>
@@ -253,49 +344,326 @@
     </div>
   </div>
 
+  <!-- Contact Modal -->
   <div id="modal-contact" class="modal">
     <div class="modal-content">
+      <span class="close" data-close="modal-contact">&times;</span>
       <p><a href="mailto:acshapes@gmail.com">acshapes@gmail.com</a></p>
       <p><a href="https://www.instagram.com/acshapes/" target="_blank">@acshapes</a></p>
     </div>
   </div>
 
-  <div id="modal-clients" class="modal">
-    <div class="modal-content">
-      <ul class="clients-list">
-        <li>Six Dots Design</li>
-        <li>BFI</li>
-        <li>Sol Paradise</li>
-        <li>st.arta</li>
-      </ul>
-    </div>
+  <!-- Work Modal -->
+  <div id="modal-work">
+    <button id="close-work">close</button>
+    <div id="moodboard"></div>
+    <div id="project-list"></div>
   </div>
 
   <script>
-    // Open modals
+    // === EXISTING MODAL LOGIC ===
     document.getElementById('open-about').onclick = () => {
       document.getElementById('modal-about').style.display = 'flex';
     };
     document.getElementById('open-contact').onclick = () => {
       document.getElementById('modal-contact').style.display = 'flex';
     };
-    document.getElementById('open-clients').onclick = () => {
-      document.getElementById('modal-clients').style.display = 'flex';
-    };
 
-    // Close modals
     document.querySelectorAll('.close').forEach(btn => {
       btn.onclick = () => {
         document.getElementById(btn.dataset.close).style.display = 'none';
       };
     });
 
-    // Close when clicking outside
     window.onclick = (e) => {
       if (e.target.classList.contains('modal')) {
         e.target.style.display = 'none';
       }
     };
+
+    // === WORK MODAL DATA ===
+    const projects = [
+      {
+        id: 'notinservice',
+        name: 'Not In Service',
+        client: 'Six Dots Design',
+        credit: 'Solo Creative Direction & Production'
+      },
+      {
+        id: 'folly',
+        name: 'A Folly Through The Trees',
+        client: 'Six Dots Design',
+        credit: 'Fabric Installation & Spatial Design'
+      },
+      {
+        id: 'balancing',
+        name: 'Balancing Art',
+        client: 'Six Dots Design',
+        credit: 'Photography & Creative Direction'
+      },
+      {
+        id: 'lifestyle',
+        name: 'Lifestyle',
+        client: 'Six Dots Design',
+        credit: 'Photography & Creative Direction'
+      },
+      {
+        id: 'carousel',
+        name: 'Retail Window Installation',
+        client: 'Carousel Jewels',
+        credit: 'Concept, Design & Installation'
+      },
+      {
+        id: 'film',
+        name: 'In His Name',
+        client: 'Lemon Top Pictures',
+        credit: 'Costume Design & Styling'
+      },
+      {
+        id: 'sol',
+        name: 'Sol Paradise',
+        client: 'Just Jump In Production',
+        credit: 'Styling & Production Assistant'
+      },
+      {
+        id: 'starta',
+        name: 'The Aztek Shirt',
+        client: 'st arta',
+        credit: 'Styling & Location Research'
+      },
+      {
+        id: 'product',
+        name: 'Product Shots',
+        client: 'Six Dots Design',
+        credit: 'Photography & Creative Direction'
+      }
+    ];
+
+    // left/top = % of container | w/h = vw units
+    // Images spread so same-project items are far apart in the layout
+    const items = [
+      // Not In Service (2 items — spread TL and CL)
+      { file: 'notinservice1.jpeg', project: 'notinservice', left: 38, top: 7,  w: 16, h: 23, rot: 0,  video: false },
+      { file: 'notinservice.mp4',  project: 'notinservice', left: 2,  top: 40, w: 18, h: 10, rot: -1, video: true  },
+
+      // A Folly Through The Trees (4 items — BL, TR, TC, BC)
+      { file: 'folly2.jpeg', project: 'folly', left: 7,  top: 56, w: 16, h: 22, rot: 2  },
+      { file: 'folly3.jpeg', project: 'folly', left: 73, top: 13, w: 15, h: 21, rot: -1 },
+      { file: 'folly1.jpeg', project: 'folly', left: 60, top: 2,  w: 13, h: 18, rot: 1  },
+      { file: 'folly4.jpeg', project: 'folly', left: 44, top: 72, w: 14, h: 20, rot: -2 },
+
+      // Balancing Art (4 items — TC, BR, BL-edge, TL-mid)
+      { file: 'balancing1.jpeg', project: 'balancing', left: 55, top: 4,  w: 13, h: 13, rot: -1 },
+      { file: 'balancing2.jpeg', project: 'balancing', left: 80, top: 52, w: 12, h: 17, rot: 2  },
+      { file: 'balancing4.jpeg', project: 'balancing', left: 8,  top: 76, w: 16, h: 10, rot: 1  },
+      { file: 'balancing3.jpeg', project: 'balancing', left: 3,  top: 15, w: 13, h: 18, rot: -2 },
+
+      // Lifestyle (4 items — CC, TR-mid, BR-mid, TL)
+      { file: 'lifestyle1.jpeg', project: 'lifestyle', left: 33, top: 40, w: 14, h: 20, rot: -1 },
+      { file: 'lifestyle2.jpeg', project: 'lifestyle', left: 70, top: 26, w: 13, h: 8,  rot: 2  },
+      { file: 'lifestyle3.jpeg', project: 'lifestyle', left: 57, top: 62, w: 13, h: 18, rot: -1 },
+      { file: 'lifestyle4.jpeg', project: 'lifestyle', left: 18, top: 3,  w: 13, h: 18, rot: 1  },
+
+      // Carousel (3 items — TL-edge, BR-edge, BC-left)
+      { file: 'carousel1.jpeg', project: 'carousel', left: 1,  top: 2,  w: 12, h: 18, rot: -1 },
+      { file: 'carousel2.jpeg', project: 'carousel', left: 86, top: 65, w: 12, h: 18, rot: 2  },
+      { file: 'carousel3.jpeg', project: 'carousel', left: 27, top: 68, w: 12, h: 18, rot: -1 },
+
+      // In His Name (4 items — TR-edge, CC-right, CL-bottom, BR)
+      { file: 'inhisname1.jpeg', project: 'film', left: 84, top: 2,  w: 11, h: 16, rot: 1  },
+      { file: 'inhisname2.jpeg', project: 'film', left: 42, top: 29, w: 12, h: 9,  rot: -2 },
+      { file: 'inhisname3.jpeg', project: 'film', left: 5,  top: 50, w: 12, h: 17, rot: 2  },
+      { file: 'inhisname4.jpeg', project: 'film', left: 68, top: 70, w: 12, h: 9,  rot: -1 },
+
+      // Sol Paradise (3 items — TL-mid, BC, CR-mid)
+      { file: 'sol1.jpeg', project: 'sol', left: 22, top: 18, w: 14, h: 21, rot: 1  },
+      { file: 'sol2.jpeg', project: 'sol', left: 50, top: 81, w: 11, h: 8,  rot: -1 },
+      { file: 'sol3.jpeg', project: 'sol', left: 63, top: 44, w: 13, h: 10, rot: 2  },
+
+      // st arta (1 item — CC-left)
+      { file: 'starta1.jpeg', project: 'starta', left: 26, top: 47, w: 14, h: 9, rot: -1 },
+
+      // Product Shots (1 item — CR-mid)
+      { file: 'product1.jpeg', project: 'product', left: 78, top: 36, w: 12, h: 17, rot: 2 }
+    ];
+
+    // === BUILD MOODBOARD ===
+    const moodboard = document.getElementById('moodboard');
+    const projectListEl = document.getElementById('project-list');
+
+    items.forEach((item, index) => {
+      const el = document.createElement('div');
+      el.className = 'mood-item';
+      el.dataset.project = item.project;
+      el.dataset.index = index;
+      el.dataset.rot = item.rot || 0;
+
+      el.style.left = item.left + '%';
+      el.style.top = item.top + '%';
+      el.style.width = item.w + 'vw';
+      el.style.height = item.h + 'vw';
+      el.style.transform = `rotate(${item.rot || 0}deg)`;
+      el.style.zIndex = index + 1;
+
+      if (item.video) {
+        const video = document.createElement('video');
+        video.autoplay = true;
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        const source = document.createElement('source');
+        source.src = item.file;
+        source.type = 'video/mp4';
+        video.appendChild(source);
+        el.appendChild(video);
+      } else {
+        const img = document.createElement('img');
+        img.src = item.file;
+        img.alt = '';
+        img.loading = 'lazy';
+        el.appendChild(img);
+      }
+
+      moodboard.appendChild(el);
+    });
+
+    // === BUILD PROJECT LIST ===
+    projects.forEach(proj => {
+      const div = document.createElement('div');
+      div.className = 'proj-item';
+      div.innerHTML = `<span class="proj-name" data-project="${proj.id}">${proj.name}</span><span class="proj-credit">— ${proj.credit}, ${proj.client}</span>`;
+      projectListEl.appendChild(div);
+    });
+
+    // === CLUSTER OFFSETS (px from screen centre) ===
+    function getClusterOffsets(count) {
+      const gap = Math.min(window.innerWidth * 0.1, 155);
+      const vg  = Math.min(window.innerHeight * 0.1, 95);
+
+      if (count === 1) return [{ x: 0, y: 0 }];
+
+      if (count === 2) return [
+        { x: -gap * 0.65, y: 0 },
+        { x:  gap * 0.65, y: 0 }
+      ];
+
+      if (count === 3) return [
+        { x: -gap,        y: -vg * 0.4 },
+        { x:  gap * 0.1,  y:  vg * 0.5 },
+        { x:  gap * 1.1,  y: -vg * 0.4 }
+      ];
+
+      if (count === 4) return [
+        { x: -gap * 1.1, y: -vg * 0.7 },
+        { x:  gap * 0.1, y: -vg * 0.7 },
+        { x: -gap * 1.1, y:  vg * 0.7 },
+        { x:  gap * 0.1, y:  vg * 0.7 }
+      ];
+
+      // 5+
+      return [
+        { x: -gap * 1.3, y: -vg * 0.6 },
+        { x:  0,          y: -vg * 0.9 },
+        { x:  gap * 1.3,  y: -vg * 0.6 },
+        { x: -gap * 0.6,  y:  vg * 0.6 },
+        { x:  gap * 0.6,  y:  vg * 0.6 }
+      ];
+    }
+
+    const isMobile = () => window.innerWidth <= 768;
+
+    // === HOVER INTERACTIONS (desktop) ===
+    function addHoverInteractions() {
+      document.querySelectorAll('.proj-name').forEach(nameEl => {
+        const projectId = nameEl.dataset.project;
+
+        nameEl.addEventListener('mouseenter', () => {
+          if (isMobile()) return;
+
+          const allItems   = document.querySelectorAll('.mood-item');
+          const projItems  = Array.from(document.querySelectorAll(`.mood-item[data-project="${projectId}"]`));
+
+          allItems.forEach(el => {
+            if (el.dataset.project === projectId) {
+              el.classList.remove('faded');
+              el.classList.add('highlighted');
+            } else {
+              el.classList.add('faded');
+              el.classList.remove('highlighted');
+            }
+          });
+
+          const offsets = getClusterOffsets(projItems.length);
+          const targetCX = window.innerWidth  * 0.5;
+          const targetCY = window.innerHeight * 0.44;
+
+          projItems.forEach((el, i) => {
+            const rect = el.getBoundingClientRect();
+            const elCX = rect.left + rect.width  / 2;
+            const elCY = rect.top  + rect.height / 2;
+            const dx   = (targetCX + offsets[i].x) - elCX;
+            const dy   = (targetCY + offsets[i].y) - elCY;
+            const smallRot = parseFloat(el.dataset.rot) * 0.15;
+            el.style.transform = `translate(${dx}px, ${dy}px) rotate(${smallRot}deg)`;
+            el.style.zIndex = 60 + i;
+          });
+        });
+
+        nameEl.addEventListener('mouseleave', () => {
+          if (isMobile()) return;
+          resetMoodboard();
+        });
+      });
+    }
+
+    function resetMoodboard() {
+      document.querySelectorAll('.mood-item').forEach((el, index) => {
+        el.classList.remove('faded', 'highlighted');
+        const rot = parseFloat(el.dataset.rot) || 0;
+        el.style.transform = `rotate(${rot}deg)`;
+        el.style.zIndex = index + 1;
+      });
+    }
+
+    // === TAP TO FILTER (mobile) ===
+    document.querySelectorAll('.proj-name').forEach(nameEl => {
+      nameEl.addEventListener('click', () => {
+        if (!isMobile()) return;
+
+        const projectId = nameEl.dataset.project;
+        const allItems  = document.querySelectorAll('.mood-item');
+        const isActive  = nameEl.classList.contains('active');
+
+        document.querySelectorAll('.proj-name').forEach(n => n.classList.remove('active'));
+
+        if (isActive) {
+          allItems.forEach(el => el.classList.remove('faded'));
+        } else {
+          nameEl.classList.add('active');
+          allItems.forEach(el => {
+            if (el.dataset.project === projectId) {
+              el.classList.remove('faded');
+            } else {
+              el.classList.add('faded');
+            }
+          });
+        }
+      });
+    });
+
+    // === OPEN / CLOSE WORK MODAL ===
+    document.getElementById('open-work').onclick = () => {
+      document.getElementById('modal-work').style.display = 'block';
+    };
+
+    document.getElementById('close-work').onclick = () => {
+      document.getElementById('modal-work').style.display = 'none';
+      resetMoodboard();
+      document.querySelectorAll('.proj-name').forEach(n => n.classList.remove('active'));
+    };
+
+    // Initialise
+    addHoverInteractions();
   </script>
 </body>
 </html>
