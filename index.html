@@ -138,7 +138,7 @@
       position: fixed; bottom: 28px; left: 50%;
       transform: translateX(-50%);
       text-align: center;
-      color: rgba(255,255,255,0.6);
+      color: rgba(0,0,0,0.5);
       font-size: 0.52rem; letter-spacing: 3px; font-weight: 200;
       font-family: 'Work Sans', sans-serif;
       opacity: 0; transition: opacity 0.4s;
@@ -266,19 +266,17 @@
       { file: 'notinservice.mov',   project: 'notinservice', aspect: 1.78, video: true },
       { file: 'folly1.jpeg',        project: 'folly',        aspect: 0.75        },
       { file: 'folly2.jpeg',        project: 'folly',        aspect: 0.75        },
-      { file: 'folly3.jpeg',        project: 'folly',        aspect: 0.75        },
       { file: 'folly4.jpeg',        project: 'folly',        aspect: 1.5         },
       { file: 'balancing1.jpeg',    project: 'balancing',    aspect: 0.75        },
-      { file: 'balancing2.jpeg',    project: 'balancing',    aspect: 0.75        },
       { file: 'balancing3.jpeg',    project: 'balancing',    aspect: 1.5         },
-      { file: 'balancing4.jpeg',    project: 'balancing',    aspect: 1.5         },
+      { file: 'balancing4.jpeg',    project: 'balancing',    aspect: 1.0         },
       { file: 'lifestyle1.jpeg',    project: 'lifestyle',    aspect: 0.75        },
-      { file: 'lifestyle2.jpeg',    project: 'lifestyle',    aspect: 0.75        },
       { file: 'lifestyle3.jpeg',    project: 'lifestyle',    aspect: 1.5         },
+      { file: 'lifestyle2.jpeg',    project: 'lifestyle',    aspect: 0.75        },
       { file: 'lifestyle4.jpeg',    project: 'lifestyle',    aspect: 0.75        },
       { file: 'carousel1.jpeg',     project: 'carousel',     aspect: 0.75        },
-      { file: 'carousel2.jpeg',     project: 'carousel',     aspect: 0.75        },
       { file: 'carousel3.jpeg',     project: 'carousel',     aspect: 1.5         },
+      { file: 'carousel2.jpeg',     project: 'carousel',     aspect: 0.75        },
       { file: 'inhisname1.jpeg',    project: 'film',         aspect: 0.75        },
       { file: 'inhisname2.jpeg',    project: 'film',         aspect: 1.5         },
       { file: 'sol1.jpeg',          project: 'sol',          aspect: 0.75        },
@@ -415,76 +413,127 @@
       canvas.style.height = Math.max(...colH) + 60 + 'px';
     }
 
-    function clusterLayout(projEls) {
-      const n   = projEls.length;
-      const vw  = window.innerWidth;
-      const vh  = window.innerHeight;
-      const padX = 50;   // horizontal padding from screen edges
-      const padY = 60;   // vertical padding
-      const gap  = 30;   // gap between images
-
+    function clusterLayout(projEls, pid) {
+      const vw   = window.innerWidth;
+      const vh   = window.innerHeight;
+      const padX = 50;
+      const padY = 60;
+      const gap  = 28;
       const availW = vw - padX * 2;
       const availH = vh - padY * 2;
 
-      // Lay images out in a single row if they fit, otherwise two rows
-      // Always prefer spreading wide over stacking
-      const cols = n;  // try all in one row first
-      const imgW = (availW - gap * (cols - 1)) / cols;
-
-      // Calculate heights
-      const heights = projEls.map(el => imgW / (parseFloat(el.dataset.aspect) || 1));
-      const maxH = Math.max(...heights);
-
-      // If a single row fits vertically, use it; otherwise go to ceil(n/2) cols
-      let finalCols = cols;
-      if (maxH > availH) {
-        finalCols = Math.ceil(n / 2);
+      // Helper: given an array of {w, h} slot proportions, scale to fit availW/availH
+      // and return absolute {x, y, w, h} positions centred in viewport
+      function resolveLayout(slots) {
+        // slots: [{x, y, w, h}] in relative units, within a bounding box of bboxW x bboxH
+        const bboxW = Math.max(...slots.map(s => s.x + s.w));
+        const bboxH = Math.max(...slots.map(s => s.y + s.h));
+        const scaleW = availW / bboxW;
+        const scaleH = availH / bboxH;
+        const scale  = Math.min(scaleW, scaleH);
+        const totalW = bboxW * scale;
+        const totalH = bboxH * scale;
+        const offX   = (vw - totalW) / 2;
+        const offY   = (vh - totalH) / 2;
+        return slots.map(s => ({
+          x: offX + s.x * scale,
+          y: offY + s.y * scale,
+          w: s.w * scale,
+          h: s.h * scale,
+        }));
       }
 
-      const finalImgW = (availW - gap * (finalCols - 1)) / finalCols;
-      const finalRows = Math.ceil(n / finalCols);
+      // ── Per-project custom layouts ──────────────────────────────────────
 
-      // Recalculate per-row max heights
-      const rowHeights = [];
-      for (let r = 0; r < finalRows; r++) {
-        let maxRH = 0;
-        for (let c = 0; c < finalCols; c++) {
-          const i = r * finalCols + c;
-          if (i < n) {
-            const h = finalImgW / (parseFloat(projEls[i].dataset.aspect) || 1);
-            maxRH = Math.max(maxRH, h);
-          }
-        }
-        rowHeights.push(maxRH);
+      // NOT IN SERVICE: image far left (portrait), video takes up 2/3 of width
+      if (pid === 'notinservice') {
+        const imgSlotW = 280; const vidSlotW = 560; const h = 400;
+        return resolveLayout([
+          { x: 0,              y: 0, w: imgSlotW,            h: h / 0.75  },
+          { x: imgSlotW + gap, y: 0, w: vidSlotW,            h: vidSlotW / 1.78 },
+        ]);
       }
 
-      const totalH = rowHeights.reduce((s, h) => s + h, 0) + gap * (finalRows - 1);
-
-      // Scale down if still too tall
-      let scale = 1;
-      if (totalH > availH) scale = availH / totalH;
-
-      const scaledW = finalImgW * scale;
-      const scaledRowH = rowHeights.map(h => h * scale);
-      const totalScaledW = scaledW * finalCols + gap * (finalCols - 1);
-      const totalScaledH = scaledRowH.reduce((s, h) => s + h, 0) + gap * (finalRows - 1);
-
-      const startX = (vw - totalScaledW) / 2;
-      const startY = (vh - totalScaledH) / 2;
-
-      const rowY = [];
-      let yOff = startY;
-      for (let r = 0; r < finalRows; r++) {
-        rowY.push(yOff);
-        yOff += scaledRowH[r] + gap;
+      // FOLLY: folly1 portrait left, folly2 portrait middle, folly4 landscape fills right
+      if (pid === 'folly') {
+        const pH = 500; const pW = pH * 0.75;
+        const lW = 500; const lH = lW / 1.5;
+        return resolveLayout([
+          { x: 0,            y: (pH - lH) / 2, w: pW, h: pH },
+          { x: pW + gap,     y: (pH - lH) / 2, w: pW, h: pH },
+          { x: pW*2 + gap*2, y: 0,              w: lW, h: lH },
+        ]);
       }
 
-      return projEls.map((el, i) => {
-        const col  = i % finalCols;
-        const row  = Math.floor(i / finalCols);
-        const imgH = scaledW / (parseFloat(el.dataset.aspect) || 1);
-        return { x: startX + col * (scaledW + gap), y: rowY[row], w: scaledW, h: imgH };
+      // BALANCING: balancing3 (landscape) large and dominant left,
+      //            balancing1 portrait top-right, balancing4 square bottom-right
+      if (pid === 'balancing') {
+        const mainW = 600; const mainH = mainW / 1.5;
+        const sideW = 280; const s1H = sideW / 0.75; const s4H = sideW;
+        return resolveLayout([
+          { x: 0,            y: 0,          w: mainW, h: mainH         },
+          { x: mainW + gap,  y: 0,          w: sideW, h: s1H           },
+          { x: mainW + gap,  y: s1H + gap,  w: sideW, h: s4H           },
+        ]);
+      }
+
+      // LIFESTYLE: landscape left large, two portraits side by side right
+      if (pid === 'lifestyle') {
+        const lW = 500; const lH = lW / 1.5;
+        const pW = 240; const pH = pW / 0.75;
+        return resolveLayout([
+          { x: 0,            y: 0, w: lW, h: lH },
+          { x: lW + gap,     y: 0, w: pW, h: pH },
+          { x: lW + pW + gap*2, y: 0, w: pW, h: pH },
+          { x: lW + gap,     y: pH + gap, w: pW*2 + gap, h: pW*2/1.5 },
+        ]);
+      }
+
+      // CAROUSEL: landscape centre large, portraits either side
+      if (pid === 'carousel') {
+        const pW = 240; const pH = pW / 0.75;
+        const lW = 460; const lH = lW / 1.5;
+        const totalH = Math.max(pH, lH);
+        return resolveLayout([
+          { x: 0,            y: (totalH - pH) / 2, w: pW, h: pH },
+          { x: pW + gap,     y: (totalH - lH) / 2, w: lW, h: lH },
+          { x: pW + lW + gap*2, y: (totalH - pH) / 2, w: pW, h: pH },
+        ]);
+      }
+
+      // IN HIS NAME: inhisname1 portrait large left, inhisname2 landscape right
+      if (pid === 'film') {
+        const pW = 340; const pH = pW / 0.75;
+        const lW = 500; const lH = lW / 1.5;
+        return resolveLayout([
+          { x: 0,          y: 0, w: pW, h: pH },
+          { x: pW + gap,   y: (pH - lH) / 2, w: lW, h: lH },
+        ]);
+      }
+
+      // SOL: sol1 portrait left, sol2 + sol3 stacked on right
+      if (pid === 'sol') {
+        const pW = 300; const pH = pW / 0.75;
+        const lW = 420; const lH = lW / 1.5;
+        return resolveLayout([
+          { x: 0,          y: 0,          w: pW, h: pH           },
+          { x: pW + gap,   y: 0,          w: lW, h: lH           },
+          { x: pW + gap,   y: lH + gap,   w: lW, h: lH           },
+        ]);
+      }
+
+      // DEFAULT: spread all images in a single row
+      const n = projEls.length;
+      const imgW = (availW - gap * (n - 1)) / n;
+      let slots = [];
+      let xOff = 0;
+      projEls.forEach(el => {
+        const aspect = parseFloat(el.dataset.aspect) || 1;
+        const h = imgW / aspect;
+        slots.push({ x: xOff, y: 0, w: imgW, h });
+        xOff += imgW + gap;
       });
+      return resolveLayout(slots);
     }
 
     function resetMoodboard() {
@@ -533,14 +582,8 @@
           }
         });
 
-        // Sort so images come before videos (image left, video right)
-        const sortedEls = [...projEls].sort((a, b) => {
-          const aIsVideo = !!a.querySelector('video');
-          const bIsVideo = !!b.querySelector('video');
-          return aIsVideo - bIsVideo;
-        });
-        const layout = clusterLayout(sortedEls);
-        sortedEls.forEach((el, i) => {
+        const layout = clusterLayout(projEls, pid);
+        projEls.forEach((el, i) => {
           const L = layout[i];
           el.style.left   = L.x + 'px';
           el.style.top    = L.y + 'px';
