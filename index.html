@@ -89,7 +89,7 @@
     }
     #close-work:hover { color: rgba(0,0,0,0.55); }
 
-    #moodboard-canvas { position: relative; width: 100%; }
+    #moodboard-canvas { position: relative; width: 100%; background: #fff; }
 
     .mood-item {
       position: absolute;
@@ -117,13 +117,13 @@
     .proj-item { margin-bottom: 5px; }
     .proj-name {
       display: block;
-      color: rgba(0,0,0,0.32);
+      color: rgba(255,255,255,0.5);
       font-size: 0.6rem; font-weight: 300;
       letter-spacing: 2.5px;
       font-family: 'Work Sans', sans-serif;
       cursor: pointer; transition: color 0.3s;
     }
-    .proj-name:hover, .proj-name.active { color: rgba(0,0,0,0.82); }
+    .proj-name:hover, .proj-name.active { color: rgba(255,255,255,0.95); }
 
     /* Credit — bottom centre */
     #work-credit {
@@ -254,32 +254,51 @@
       { id: 'product',      name: 'Product Shots',              client: 'Six Dots Design',         credit: 'Photography & Creative Direction'       },
     ];
 
-    const items = [
-      { file: 'notinservice1.jpeg', project: 'notinservice', aspect: 0.75  },
+    // All images — used for project hover clusters
+    const allItems = [
+      { file: 'notinservice1.jpeg', project: 'notinservice', aspect: 0.75        },
       { file: 'notinservice.mov',   project: 'notinservice', aspect: 1.78, video: true },
-      { file: 'folly1.jpeg',        project: 'folly',        aspect: 0.75  },
-      { file: 'folly2.jpeg',        project: 'folly',        aspect: 0.75  },
-      { file: 'folly3.jpeg',        project: 'folly',        aspect: 0.75  },
-      { file: 'folly4.jpeg',        project: 'folly',        aspect: 1.5   },
-      { file: 'balancing1.jpeg',    project: 'balancing',    aspect: 0.75  },
-      { file: 'balancing2.jpeg',    project: 'balancing',    aspect: 0.75  },
-      { file: 'balancing3.jpeg',    project: 'balancing',    aspect: 1.5   },
-      { file: 'balancing4.jpeg',    project: 'balancing',    aspect: 1.5   },
-      { file: 'lifestyle1.jpeg',    project: 'lifestyle',    aspect: 0.75  },
-      { file: 'lifestyle2.jpeg',    project: 'lifestyle',    aspect: 0.75  },
-      { file: 'lifestyle3.jpeg',    project: 'lifestyle',    aspect: 1.5   },
-      { file: 'lifestyle4.jpeg',    project: 'lifestyle',    aspect: 0.75  },
-      { file: 'carousel1.jpeg',     project: 'carousel',     aspect: 0.75  },
-      { file: 'carousel2.jpeg',     project: 'carousel',     aspect: 0.75  },
-      { file: 'carousel3.jpeg',     project: 'carousel',     aspect: 1.5   },
-      { file: 'inhisname1.jpeg',    project: 'film',         aspect: 0.75  },
-      { file: 'inhisname2.jpeg',    project: 'film',         aspect: 1.5   },
-      { file: 'sol1.jpeg',          project: 'sol',          aspect: 0.75  },
-      { file: 'sol2.jpeg',          project: 'sol',          aspect: 1.5   },
-      { file: 'sol3.jpeg',          project: 'sol',          aspect: 1.5   },
-      { file: 'starta1.jpeg',       project: 'starta',       aspect: 1.78  },
-      { file: 'product1.jpeg',      project: 'product',      aspect: 0.75  },
+      { file: 'folly1.jpeg',        project: 'folly',        aspect: 0.75        },
+      { file: 'folly2.jpeg',        project: 'folly',        aspect: 0.75        },
+      { file: 'folly3.jpeg',        project: 'folly',        aspect: 0.75        },
+      { file: 'folly4.jpeg',        project: 'folly',        aspect: 1.5         },
+      { file: 'balancing1.jpeg',    project: 'balancing',    aspect: 0.75        },
+      { file: 'balancing2.jpeg',    project: 'balancing',    aspect: 0.75        },
+      { file: 'balancing3.jpeg',    project: 'balancing',    aspect: 1.5         },
+      { file: 'balancing4.jpeg',    project: 'balancing',    aspect: 1.5         },
+      { file: 'lifestyle1.jpeg',    project: 'lifestyle',    aspect: 0.75        },
+      { file: 'lifestyle2.jpeg',    project: 'lifestyle',    aspect: 0.75        },
+      { file: 'lifestyle3.jpeg',    project: 'lifestyle',    aspect: 1.5         },
+      { file: 'lifestyle4.jpeg',    project: 'lifestyle',    aspect: 0.75        },
+      { file: 'carousel1.jpeg',     project: 'carousel',     aspect: 0.75        },
+      { file: 'carousel2.jpeg',     project: 'carousel',     aspect: 0.75        },
+      { file: 'carousel3.jpeg',     project: 'carousel',     aspect: 1.5         },
+      { file: 'inhisname1.jpeg',    project: 'film',         aspect: 0.75        },
+      { file: 'inhisname2.jpeg',    project: 'film',         aspect: 1.5         },
+      { file: 'sol1.jpeg',          project: 'sol',          aspect: 0.75        },
+      { file: 'sol2.jpeg',          project: 'sol',          aspect: 1.5         },
+      { file: 'sol3.jpeg',          project: 'sol',          aspect: 1.5         },
+      { file: 'starta1.jpeg',       project: 'starta',       aspect: 1.78        },
+      { file: 'product1.jpeg',      project: 'product',      aspect: 0.75        },
     ];
+
+    // Curated 12 shown in the grid, in this exact order
+    const gridFiles = [
+      'notinservice1.jpeg',
+      'folly1.jpeg',
+      'balancing1.jpeg',
+      'lifestyle1.jpeg',
+      'carousel1.jpeg',
+      'inhisname1.jpeg',
+      'sol1.jpeg',
+      'starta1.jpeg',
+      'product1.jpeg',
+      'folly2.jpeg',
+      'balancing2.jpeg',
+      'lifestyle2.jpeg',
+    ];
+
+    const items = allItems;
 
     const canvas     = document.getElementById('moodboard-canvas');
     const projListEl = document.getElementById('project-list');
@@ -351,11 +370,19 @@
       const padSide = 22;
       const colW    = (W - padSide * 2 - gap * (numCols - 1)) / numCols;
       const colH    = new Array(numCols).fill(padTop);
-      const order   = interleaveByProject(items);
 
-      order.forEach(({ origIndex }) => {
-        const item = items[origIndex];
-        const el   = domItems[origIndex];
+      // Hide all items first
+      domItems.forEach(el => {
+        el.style.opacity      = '0';
+        el.style.pointerEvents = 'none';
+      });
+
+      // Layout only the curated grid items in fixed order
+      gridFiles.forEach(file => {
+        const idx = allItems.findIndex(it => it.file === file);
+        if (idx === -1) return;
+        const item = allItems[idx];
+        const el   = domItems[idx];
         const imgW = colW;
         const imgH = imgW / item.aspect;
 
@@ -367,14 +394,16 @@
         const x = padSide + minC * (colW + gap);
         const y = colH[minC];
 
-        el.style.left      = x + 'px';
-        el.style.top       = y + 'px';
-        el.style.width     = imgW + 'px';
-        el.style.height    = imgH + 'px';
-        el.style.transform = 'none';
-        el.style.zIndex    = origIndex + 1;
+        el.style.left          = x + 'px';
+        el.style.top           = y + 'px';
+        el.style.width         = imgW + 'px';
+        el.style.height        = imgH + 'px';
+        el.style.transform     = 'none';
+        el.style.zIndex        = idx + 1;
+        el.style.opacity       = '1';
+        el.style.pointerEvents = 'auto';
 
-        origPos[origIndex] = { x, y, w: imgW, h: imgH };
+        origPos[idx] = { x, y, w: imgW, h: imgH, inGrid: true };
         colH[minC] += imgH + gap;
       });
 
@@ -382,23 +411,35 @@
     }
 
     function clusterLayout(projEls) {
-      const n    = projEls.length;
-      const vw   = window.innerWidth;
-      const vh   = window.innerHeight;
-      const gap  = 28;
-      const imgW = Math.min(vw * 0.16, 200);
+      const n   = projEls.length;
+      const vw  = window.innerWidth;
+      const vh  = window.innerHeight;
+      const pad = 60;  // padding from screen edges
+      const gap = 20;  // gap between images
 
-      // Figure out column count
-      const cols = n <= 2 ? n : n <= 6 ? 3 : 4;
+      const availW = vw - pad * 2;
+      const availH = vh - pad * 2;
+
+      // Decide column count based on number of images
+      let cols;
+      if      (n === 1) cols = 1;
+      else if (n === 2) cols = 2;
+      else if (n <= 4)  cols = 2;
+      else if (n <= 6)  cols = 3;
+      else              cols = 4;
+
       const rows = Math.ceil(n / cols);
 
-      // Pre-calculate all heights so we can figure out total grid size
+      // Work out image width from available space
+      const imgW = (availW - gap * (cols - 1)) / cols;
+
+      // Calculate heights per image
       const heights = projEls.map(el => {
         const aspect = parseFloat(el.dataset.aspect) || 1;
         return imgW / aspect;
       });
 
-      // Find max height per row for proper row offsets
+      // Max height per row
       const rowHeights = [];
       for (let r = 0; r < rows; r++) {
         let maxH = 0;
@@ -409,31 +450,39 @@
         rowHeights.push(maxH);
       }
 
-      const totalW = cols * imgW + (cols - 1) * gap;
-      const totalH = rowHeights.reduce((s, h) => s + h, 0) + (rows - 1) * gap;
+      const totalH = rowHeights.reduce((s, h) => s + h, 0) + gap * (rows - 1);
 
-      // Centre the whole cluster in the viewport
-      const startX = (vw - totalW) / 2;
-      const startY = Math.max(60, (vh - totalH) / 2);
+      // If total height exceeds available, scale everything down
+      let scale = 1;
+      if (totalH > availH) {
+        scale = availH / totalH;
+      }
 
-      // Build row Y offsets
+      const scaledImgW = imgW * scale;
+      const scaledRowH = rowHeights.map(h => h * scale);
+      const scaledTotalW = scaledImgW * cols + gap * (cols - 1);
+      const scaledTotalH = scaledRowH.reduce((s, h) => s + h, 0) + gap * (rows - 1);
+
+      const startX = (vw - scaledTotalW) / 2;
+      const startY = (vh - scaledTotalH) / 2;
+
+      // Row Y offsets
       const rowY = [];
       let yOff = startY;
       for (let r = 0; r < rows; r++) {
         rowY.push(yOff);
-        yOff += rowHeights[r] + gap;
+        yOff += scaledRowH[r] + gap;
       }
 
       return projEls.map((el, i) => {
         const col    = i % cols;
         const row    = Math.floor(i / cols);
         const aspect = parseFloat(el.dataset.aspect) || 1;
-        const imgH   = imgW / aspect;
-        // Vertically align items within their row to the top
+        const imgH   = scaledImgW / aspect;
         return {
-          x: startX + col * (imgW + gap),
+          x: startX + col * (scaledImgW + gap),
           y: rowY[row],
-          w: imgW,
+          w: scaledImgW,
           h: imgH
         };
       });
@@ -442,13 +491,21 @@
     function resetMoodboard() {
       domItems.forEach((el, i) => {
         el.classList.remove('faded', 'highlighted');
-        if (!isMobile() && origPos[i]) {
-          const p = origPos[i];
-          el.style.left   = p.x + 'px';
-          el.style.top    = p.y + 'px';
-          el.style.width  = p.w + 'px';
-          el.style.height = p.h + 'px';
-          el.style.zIndex = i + 1;
+        if (!isMobile()) {
+          if (origPos[i] && origPos[i].inGrid) {
+            const p = origPos[i];
+            el.style.left          = p.x + 'px';
+            el.style.top           = p.y + 'px';
+            el.style.width         = p.w + 'px';
+            el.style.height        = p.h + 'px';
+            el.style.zIndex        = i + 1;
+            el.style.opacity       = '1';
+            el.style.pointerEvents = 'auto';
+          } else {
+            // Not in grid — hide again
+            el.style.opacity       = '0';
+            el.style.pointerEvents = 'none';
+          }
         }
       });
       creditEl.classList.remove('visible');
@@ -464,8 +521,15 @@
         const projEls = domItems.filter(el => el.dataset.project === pid);
 
         domItems.forEach(el => {
-          if (el.dataset.project === pid) { el.classList.add('highlighted'); el.classList.remove('faded'); }
-          else                            { el.classList.add('faded');       el.classList.remove('highlighted'); }
+          if (el.dataset.project === pid) {
+            el.classList.add('highlighted');
+            el.classList.remove('faded');
+            el.style.opacity       = '1';
+            el.style.pointerEvents = 'auto';
+          } else {
+            el.classList.add('faded');
+            el.classList.remove('highlighted');
+          }
         });
 
         // Sort so images come before videos (image left, video right)
