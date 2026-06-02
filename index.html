@@ -343,12 +343,24 @@
       'folly2.jpeg',
       'balancing1.jpeg',
       'lifestyle1.jpeg',
+      'carousel1.jpeg',
+      'inhisname1.jpeg',
+      'sol1.jpeg',
+      'starta1.jpeg',
+      'product1.jpeg',
+      'balancing2.jpeg',
+    ];
+
+    const mobileGridFiles = [
+      'notinservice1.jpeg',
+      'folly2.jpeg',
+      'balancing1.jpeg',
+      'lifestyle1.jpeg',
       'inhisname1.jpeg',
       'sol1.jpeg',
       'starta1.jpeg',
       'product1.jpeg',
       'carousel1.jpeg',
-      'balancing2.jpeg',
     ];
 
     const items = allItems;
@@ -392,9 +404,13 @@
     function setupMobileGrid() {
       domItems.forEach(el => {
         const file = allItems[parseInt(el.dataset.index)].file;
-        if (!gridFiles.includes(file)) {
-          el.classList.add('mobile-hidden');
-        }
+        el.classList.toggle('mobile-hidden', !mobileGridFiles.includes(file));
+      });
+      // Reorder items visually to match mobileGridFiles order
+      const canvas = document.getElementById('moodboard-canvas');
+      mobileGridFiles.forEach((file, i) => {
+        const idx = allItems.findIndex(it => it.file === file);
+        if (idx !== -1) domItems[idx].style.order = i;
       });
     }
     if (isMobile()) setupMobileGrid();
