@@ -370,6 +370,7 @@
       'lifestyle1.jpeg',
       'carousel1.jpeg',
     ];
+    const mobileColumnBreakBefore = 'sol1.jpeg'; // force into right column
 
     const items = allItems;
 
@@ -427,7 +428,8 @@
         if (idx === -1) return;
         const el = domItems[idx];
         el.classList.remove('mobile-hidden');
-        canvas.appendChild(el); // move to end in correct order
+        el.style.breakBefore = (file === mobileColumnBreakBefore) ? 'column' : '';
+        canvas.appendChild(el);
       });
     }
     if (isMobile()) setupMobileGrid();
