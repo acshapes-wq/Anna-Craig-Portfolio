@@ -102,7 +102,7 @@
     .mood-item {
       position: absolute;
       overflow: hidden;
-      background: #f0f0f0;
+      background: transparent;
       transition:
         opacity 0.5s ease,
         left   0.7s cubic-bezier(0.25,0.46,0.45,0.94),
@@ -162,13 +162,13 @@
       #modal-work { overflow-y: auto; background: #fff !important; }
       #close-work { top: 14px; right: 14px; font-size: 0.55rem; }
 
-      /* Two-column grid */
+      /* Two-column masonry via CSS columns */
       #moodboard-canvas {
         position: relative !important;
         height: auto !important;
-        display: grid !important;
-        grid-template-columns: 1fr 1fr;
-        gap: 2px;
+        display: block !important;
+        column-count: 2;
+        column-gap: 2px;
         padding: 50px 0 80px;
         background: #fff !important;
       }
@@ -180,6 +180,10 @@
         opacity: 1 !important;
         transition: opacity 0.3s ease !important;
         cursor: pointer;
+        break-inside: avoid;
+        display: inline-block;
+        margin-bottom: 2px;
+        background: transparent !important;
       }
       .mood-item img, .mood-item video {
         width: 100%; height: auto; object-fit: unset; display: block;
@@ -402,15 +406,24 @@
 
     // ── Mobile: mark non-grid items as hidden in the grid ────────────────
     function setupMobileGrid() {
-      domItems.forEach(el => {
-        const file = allItems[parseInt(el.dataset.index)].file;
-        el.classList.toggle('mobile-hidden', !mobileGridFiles.includes(file));
-      });
-      // Reorder items visually to match mobileGridFiles order
       const canvas = document.getElementById('moodboard-canvas');
-      mobileGridFiles.forEach((file, i) => {
+      // Hide all first
+      domItems.forEach(el => el.classList.add('mobile-hidden'));
+
+      // CSS columns flow top-to-bottom, left-to-right.
+      // To get col1=[0,2,4,6,8] and col2=[1,3,5,7], we interleave into
+      // two virtual columns then append in column order.
+      const col1Files = mobileGridFiles.filter((_, i) => i % 2 === 0);
+      const col2Files = mobileGridFiles.filter((_, i) => i % 2 === 1);
+      const orderedFiles = [...col1Files, ...col2Files];
+      // Not ideal — CSS columns reflow automatically, so just append in reading order
+      // and let the browser handle column assignment naturally.
+      mobileGridFiles.forEach(file => {
         const idx = allItems.findIndex(it => it.file === file);
-        if (idx !== -1) domItems[idx].style.order = i;
+        if (idx === -1) return;
+        const el = domItems[idx];
+        el.classList.remove('mobile-hidden');
+        canvas.appendChild(el); // move to end in correct order
       });
     }
     if (isMobile()) setupMobileGrid();
@@ -459,6 +472,8 @@
     }
 
     document.getElementById('mobile-close-btn').addEventListener('click', hideMobileProject);
+    // Tap anywhere on mobile overlay to close
+    document.getElementById('mobile-project-overlay').addEventListener('click', hideMobileProject);
 
     projects.forEach(proj => {
       const d = document.createElement('div');
