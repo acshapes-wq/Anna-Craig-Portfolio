@@ -114,6 +114,10 @@
       width: 100%; height: 100%;
       object-fit: cover; display: block;
     }
+    .mood-item.contain img {
+      object-fit: contain;
+      background: transparent;
+    }
     .mood-item.faded { opacity: 0.05; }
     .mood-item.highlighted { opacity: 1; z-index: 50 !important; }
 
@@ -264,9 +268,9 @@
     const allItems = [
       { file: 'notinservice1.jpeg', project: 'notinservice', aspect: 0.75,  gridOnly: true },
       { file: 'notinservice.mov',   project: 'notinservice', aspect: 1.78,  video: true    },
-      { file: 'folly1.jpeg',        project: 'folly',        aspect: 0.75,  gridOnly: true },
+      { file: 'folly2.jpeg',        project: 'folly',        aspect: 0.75,  gridOnly: true },
+      { file: 'folly1.jpeg',        project: 'folly',        aspect: 0.75        },
       { file: 'folly4.jpeg',        project: 'folly',        aspect: 1.5         },
-      { file: 'folly2.jpeg',        project: 'folly',        aspect: 0.75        },
       { file: 'balancing1.jpeg',    project: 'balancing',    aspect: 0.75,  gridOnly: true },
       { file: 'balancing2.jpeg',    project: 'balancing',    aspect: 0.75,  gridOnly: true },
       { file: 'balancing3.jpeg',    project: 'balancing',    aspect: 1.5         },
@@ -286,7 +290,7 @@
     // Curated 12 shown in the grid, in this exact order
     const gridFiles = [
       'notinservice1.jpeg',
-      'folly1.jpeg',
+      'folly2.jpeg',
       'balancing1.jpeg',
       'lifestyle1.jpeg',
       'carousel1.jpeg',
@@ -295,7 +299,6 @@
       'starta1.jpeg',
       'product1.jpeg',
       'balancing2.jpeg',
-      'folly2.jpeg',
     ];
 
     const items = allItems;
@@ -316,6 +319,7 @@
         const v = document.createElement('video');
         // notinservice video plays with sound in project view
         v.autoplay = true; v.muted = true; v.loop = true; v.playsInline = true;
+        v.setAttribute('loop', '');
         v.dataset.projectVideo = 'true';
         // Try both MIME types for .mov compatibility across browsers
         ['video/mp4', 'video/quicktime'].forEach(type => {
@@ -444,23 +448,23 @@
         return resolveLayout([{ x: 0, y: 0, w: vidW, h: vidH }]);
       }
 
-      // FOLLY: folly4 landscape left, folly2 portrait right — same vertical centre
-      // projEls order: folly4, folly2
+      // FOLLY: folly1 portrait left, folly4 landscape right — vertically centred
+      // projEls order in allItems: folly1, folly4
       if (pid === 'folly') {
-        const lW = 540; const lH = lW / 1.5;
         const pW = 300; const pH = pW / 0.75;
-        const totalH = Math.max(lH, pH);
+        const lW = 540; const lH = lW / 1.5;
+        const totalH = Math.max(pH, lH);
         return resolveLayout([
-          { x: 0,          y: (totalH - lH) / 2, w: lW, h: lH },
-          { x: lW + gap,   y: (totalH - pH) / 2, w: pW, h: pH },
+          { x: 0,          y: (totalH - pH) / 2, w: pW, h: pH },
+          { x: pW + gap,   y: (totalH - lH) / 2, w: lW, h: lH },
         ]);
       }
 
-      // BALANCING: balancing3 landscape uncropped dominant, balancing4 square beside
-      // projEls order: balancing3, balancing4
+      // BALANCING: balancing3 landscape fully uncropped, balancing4 square beside
+      // Use object-fit: contain on balancing3 to never crop
       if (pid === 'balancing') {
         const lW = 640; const lH = lW / 1.5;
-        const sW = 300; const sH = sW; // square
+        const sW = 300; const sH = sW;
         const totalH = Math.max(lH, sH);
         return resolveLayout([
           { x: 0,        y: (totalH - lH) / 2, w: lW, h: lH },
@@ -469,7 +473,6 @@
       }
 
       // LIFESTYLE: lifestyle1 portrait left, lifestyle3 landscape right
-      // projEls order: lifestyle1, lifestyle3
       if (pid === 'lifestyle') {
         const pW = 300; const pH = pW / 0.75;
         const lW = 520; const lH = lW / 1.5;
@@ -489,17 +492,17 @@
         ]);
       }
 
-      // IN HIS NAME: portrait large left, landscape right vertically centred
+      // IN HIS NAME: portrait large left, landscape right slightly smaller
       if (pid === 'film') {
-        const pW = 340; const pH = pW / 0.75;
-        const lW = 500; const lH = lW / 1.5;
+        const pW = 380; const pH = pW / 0.75;
+        const lW = 380; const lH = lW / 1.5;
         return resolveLayout([
           { x: 0,        y: 0,             w: pW, h: pH },
           { x: pW + gap, y: (pH - lH) / 2, w: lW, h: lH },
         ]);
       }
 
-      // SOL: sol1 portrait left, sol3 landscape right — vertically centred
+      // SOL: sol1 portrait left, sol3 landscape right
       if (pid === 'sol') {
         const pW = 320; const pH = pW / 0.75;
         const lW = 500; const lH = lW / 1.5;
@@ -524,7 +527,7 @@
 
     function resetMoodboard() {
       domItems.forEach((el, i) => {
-        el.classList.remove('faded', 'highlighted');
+        el.classList.remove('faded', 'highlighted', 'contain');
         if (!isMobile()) {
           if (origPos[i] && origPos[i].inGrid) {
             const p = origPos[i];
@@ -560,6 +563,9 @@
           el.classList.add('highlighted'); el.classList.remove('faded');
           el.style.opacity = '1'; el.style.pointerEvents = 'auto';
           const v = el.querySelector('video'); if (v) v.muted = false;
+          // balancing3 should never be cropped
+          const src = el.querySelector('img') ? el.querySelector('img').src : '';
+          if (src.includes('balancing3')) el.classList.add('contain');
         } else {
           el.classList.add('faded'); el.classList.remove('highlighted');
           const v = el.querySelector('video'); if (v) v.muted = true;
@@ -593,24 +599,26 @@
       resetMoodboard();
     }
 
-    // ── Wire up grid image clicks ─────────────────────────────────────────
+    // ── Wire up grid image hover ──────────────────────────────────────────
     domItems.forEach(el => {
       el.style.cursor = 'pointer';
-      el.addEventListener('click', () => {
-        if (isMobile()) return;
-        const pid = el.dataset.project;
-        if (activeProject === pid) {
-          // clicking same project deselects
-          hideProject();
-        } else {
-          activeProject = pid;
-          showProject(pid);
-        }
+      el.addEventListener('mouseenter', () => {
+        if (isMobile() || activeProject) return;
+        showProject(el.dataset.project);
+      });
+      el.addEventListener('mouseleave', () => {
+        if (isMobile() || activeProject) return;
+        document.getElementById('grid-overlay').classList.remove('active');
+        domItems.forEach(e => { const v = e.querySelector('video'); if (v) v.muted = true; });
+        resetMoodboard();
       });
     });
 
-    // Click on overlay (not on an image) dismisses
-    document.getElementById('grid-overlay').addEventListener('click', hideProject);
+    // Click anywhere on the work modal closes any open project
+    document.getElementById('modal-work').addEventListener('click', (e) => {
+      if (isMobile()) return;
+      if (activeProject) hideProject();
+    });
 
     // ── Project name list: hover previews, click locks ────────────────────
     document.querySelectorAll('.proj-name').forEach(nameEl => {
@@ -628,7 +636,8 @@
         resetMoodboard();
       });
 
-      nameEl.addEventListener('click', () => {
+      nameEl.addEventListener('click', (e) => {
+        e.stopPropagation();
         if (isMobile()) return;
         if (activeProject === pid) {
           hideProject();
