@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,24 +110,13 @@
         top    0.7s cubic-bezier(0.25,0.46,0.45,0.94),
         width  0.7s cubic-bezier(0.25,0.46,0.45,0.94),
         height 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
-      cursor: pointer;
     }
     .mood-item img, .mood-item video {
       width: 100%; height: 100%;
       object-fit: cover; display: block;
     }
     .mood-item.faded { opacity: 0.05; }
-    .mood-item.highlighted {
-  opacity: 1;
-  z-index: 50 !important;
-}
-
-.mood-item.highlighted img {
-  object-fit: contain;
-}
-    .mood-item:hover {
-  opacity: 0.92;
-}
+    .mood-item.highlighted { opacity: 1; z-index: 50 !important; }
 
     /* Project list — bottom left */
     #project-list {
@@ -275,23 +265,23 @@
     const allItems = [
       { file: 'notinservice1.jpeg', project: 'notinservice', aspect: 0.75,  gridOnly: true },
       { file: 'notinservice.mov',   project: 'notinservice', aspect: 1.78,  video: true    },
-     { file: 'folly1.jpeg', project: 'folly', aspect: 0.75, gridOnly: true },
+      { file: 'folly1.jpeg',        project: 'folly',        aspect: 0.75        },
       { file: 'folly2.jpeg',        project: 'folly',        aspect: 0.75        },
       { file: 'folly4.jpeg',        project: 'folly',        aspect: 1.5         },
-     { file: 'balancing1.jpeg', project: 'balancing', aspect: 0.75, gridOnly: true },
+      { file: 'balancing1.jpeg',    project: 'balancing',    aspect: 0.75        },
       { file: 'balancing2.jpeg',    project: 'balancing',    aspect: 0.75,  gridOnly: true },
       { file: 'balancing3.jpeg',    project: 'balancing',    aspect: 1.5         },
       { file: 'balancing4.jpeg',    project: 'balancing',    aspect: 1.0         },
       { file: 'lifestyle1.jpeg',    project: 'lifestyle',    aspect: 0.75        },
-     { file: 'lifestyle2.jpeg', project: 'lifestyle', aspect: 0.75, gridOnly: true },
+      { file: 'lifestyle2.jpeg',    project: 'lifestyle',    aspect: 0.75        },
       { file: 'lifestyle3.jpeg',    project: 'lifestyle',    aspect: 1.5         },
-      { file: 'lifestyle4.jpeg', project: 'lifestyle', aspect: 1.5, gridOnly: true },
+      { file: 'lifestyle4.jpeg',    project: 'lifestyle',    aspect: 1.5         },
       { file: 'carousel1.jpeg',     project: 'carousel',     aspect: 0.75        },
       { file: 'carousel2.jpeg',     project: 'carousel',     aspect: 0.75        },
       { file: 'inhisname1.jpeg',    project: 'film',         aspect: 0.75        },
       { file: 'inhisname2.jpeg',    project: 'film',         aspect: 1.5         },
       { file: 'sol1.jpeg',          project: 'sol',          aspect: 0.75        },
-     { file: 'sol2.jpeg', project: 'sol', aspect: 1.5, gridOnly: true },
+      { file: 'sol2.jpeg',          project: 'sol',          aspect: 1.5         },
       { file: 'sol3.jpeg',          project: 'sol',          aspect: 1.5         },
       { file: 'starta1.jpeg',       project: 'starta',       aspect: 1.78        },
       { file: 'product1.jpeg',      project: 'product',      aspect: 0.75        },
@@ -360,142 +350,6 @@
     });
 
     const origPos = [];
-    function activateProject(pid) {
-
-  const proj = projects.find(p => p.id === pid);
-
-  const projEls = domItems.filter(
-    el =>
-      el.dataset.project === pid &&
-      el.dataset.gridOnly !== 'true'
-  );
-
-  document.getElementById('grid-overlay').classList.add('active');
-
-  domItems.forEach(el => {
-
-    if (el.dataset.project === pid) {
-
-      el.classList.add('highlighted');
-      el.classList.remove('faded');
-
-      el.style.opacity = '1';
-      el.style.pointerEvents = 'auto';
-
-      const v = el.querySelector('video');
-      if (v) v.muted = false;
-
-    } else {
-
-      el.classList.add('faded');
-      el.classList.remove('highlighted');
-
-      const v = el.querySelector('video');
-      if (v) v.muted = true;
-
-    }
-
-  });
-
-  const layout = clusterLayout(projEls, pid);
-
-  projEls.forEach((el, i) => {
-
-    const L = layout[i];
-
-    el.style.left = L.x + 'px';
-    el.style.top = L.y + 'px';
-    el.style.width = L.w + 'px';
-    el.style.height = L.h + 'px';
-    el.style.zIndex = 60 + i;
-
-  });
-
-  if (proj) {
-
-    creditEl.textContent =
-      `${proj.credit} — ${proj.client}`;
-
-    creditEl.classList.add('visible');
-
-  }
-
-}
-
-function deactivateProject() {
-
-  document
-    .getElementById('grid-overlay')
-    .classList.remove('active');
-
-  domItems.forEach(el => {
-
-    const v = el.querySelector('video');
-
-    if (v) v.muted = true;
-
-  });
-
-  resetMoodboard();
-
-}
-    function activateProject(pid) {
-  const proj = projects.find(p => p.id === pid);
-
-  const projEls = domItems.filter(
-    el =>
-      el.dataset.project === pid &&
-      el.dataset.gridOnly !== 'true'
-  );
-
-  document.getElementById('grid-overlay').classList.add('active');
-
-  domItems.forEach(el => {
-    if (el.dataset.project === pid) {
-      el.classList.add('highlighted');
-      el.classList.remove('faded');
-      el.style.opacity = '1';
-
-      const v = el.querySelector('video');
-      if (v) v.muted = false;
-    } else {
-      el.classList.add('faded');
-      el.classList.remove('highlighted');
-
-      const v = el.querySelector('video');
-      if (v) v.muted = true;
-    }
-  });
-
-  const layout = clusterLayout(projEls, pid);
-
-  projEls.forEach((el, i) => {
-    const L = layout[i];
-    if (!L) return;
-
-    el.style.left = L.x + 'px';
-    el.style.top = L.y + 'px';
-    el.style.width = L.w + 'px';
-    el.style.height = L.h + 'px';
-    el.style.zIndex = 60 + i;
-  });
-
-  if (proj) {
-    creditEl.textContent = `${proj.credit} — ${proj.client}`;
-    creditEl.classList.add('visible');
-  }
-}
-
-function deactivateProject() {
-  document.getElementById('grid-overlay').classList.remove('active');
-
-  domItems.forEach(el => {
-    const v = el.querySelector('video');
-    if (v) v.muted = true;
-  });
-
-  resetMoodboard();
-}
 
     function isMobile() { return window.innerWidth <= 768; }
 
@@ -590,56 +444,52 @@ function deactivateProject() {
 
       // NOT IN SERVICE: video only, fills screen
       if (pid === 'notinservice') {
-        const vidH = 280; const vidW = vidH * 1.78;
+        const vidH = 400; const vidW = vidH * 1.78;
         return resolveLayout([
           { x: 0, y: 0, w: vidW, h: vidH },
         ]);
       }
 
       // FOLLY: folly1 portrait left, folly4 landscape centre, folly2 portrait right
-     if (pid === 'folly') {
-  const lW = 560;
-  const lH = lW / 1.5;
-
-  const pH = 520;
-  const pW = pH * 0.75;
-
-  return resolveLayout([
-    { x: 0,         y: (pH - lH) / 2, w: lW, h: lH },
-    { x: lW + gap,  y: 0,             w: pW, h: pH },
-  ]);
-}
+      if (pid === 'folly') {
+        const pH = 500; const pW = pH * 0.75;
+        const lW = 500; const lH = lW / 1.5;
+        const totalH = pH;
+        return resolveLayout([
+          { x: 0,                  y: (totalH - pH) / 2, w: pW, h: pH },
+          { x: pW + gap,           y: (totalH - lH) / 2, w: lW, h: lH },
+          { x: pW + lW + gap * 2,  y: (totalH - pH) / 2, w: pW, h: pH },
+        ]);
+      }
 
       // BALANCING: balancing3 (landscape) dominant left large,
       //            balancing1 portrait top-right, balancing4 square bottom-right
       // projEls order: balancing1, balancing3, balancing4
-   if (pid === 'balancing') {
-  const mainW = 700;
-  const mainH = mainW / 1.5;
-
-  const sideW = 300;
-  const sideH = sideW;
-
-  return resolveLayout([
-    { x: 0,            y: 0, w: mainW, h: mainH },
-    { x: mainW + gap,  y: (mainH - sideH) / 2, w: sideW, h: sideH },
-  ]);
-}
+      if (pid === 'balancing') {
+        const mainW = 620; const mainH = mainW / 1.5;
+        const sideW = 280; const s1H = sideW / 0.75; const s4H = sideW;
+        // slot 0 = balancing1 (portrait, top-right)
+        // slot 1 = balancing3 (landscape, main left)  
+        // slot 2 = balancing4 (square, bottom-right)
+        return resolveLayout([
+          { x: mainW + gap,  y: 0,          w: sideW, h: s1H  }, // balancing1 top-right
+          { x: 0,            y: 0,          w: mainW, h: mainH }, // balancing3 main
+          { x: mainW + gap,  y: s1H + gap,  w: sideW, h: s4H  }, // balancing4 bottom-right
+        ]);
+      }
 
       // LIFESTYLE: landscape left large, two portraits right column, fourth landscape below left
       // order: lifestyle1(portrait), lifestyle2(portrait), lifestyle3(landscape), lifestyle4(landscape)
-    if (pid === 'lifestyle') {
-  const pW = 260;
-  const pH = pW / 0.75;
-
-  const lW = 600;
-  const lH = lW / 1.5;
-
-  return resolveLayout([
-    { x: 0,         y: 0, w: pW, h: pH },
-    { x: pW + gap,  y: (pH - lH) / 2, w: lW, h: lH },
-  ]);
-}
+      if (pid === 'lifestyle') {
+        const lW = 480; const lH = lW / 1.5;
+        const pW = 230; const pH = pW / 0.75;
+        return resolveLayout([
+          { x: 0,                y: 0,          w: pW, h: pH },
+          { x: pW + gap,         y: 0,          w: lW, h: lH },
+          { x: pW + lW + gap*2,  y: 0,          w: pW, h: pH },
+          { x: pW + gap,         y: lH + gap,   w: lW, h: lH },
+        ]);
+      }
 
       // CAROUSEL: portrait left, portrait right (carousel3 removed)
       if (pid === 'carousel') {
@@ -661,18 +511,15 @@ function deactivateProject() {
       }
 
       // SOL: sol1 portrait left, sol2 + sol3 stacked right
-   if (pid === 'sol') {
-  const pW = 280;
-  const pH = pW / 0.75;
-
-  const lW = 700;
-  const lH = lW / 1.5;
-
-  return resolveLayout([
-    { x: 0,         y: 0, w: pW, h: pH },
-    { x: pW + gap,  y: (pH - lH) / 2, w: lW, h: lH },
-  ]);
-}
+      if (pid === 'sol') {
+        const pW = 300; const pH = pW / 0.75;
+        const lW = 420; const lH = lW / 1.5;
+        return resolveLayout([
+          { x: 0,        y: 0,        w: pW, h: pH },
+          { x: pW + gap, y: 0,        w: lW, h: lH },
+          { x: pW + gap, y: lH + gap, w: lW, h: lH },
+        ]);
+      }
 
       // DEFAULT: single row spread
       const n = projEls.length;
@@ -715,12 +562,29 @@ function deactivateProject() {
       const proj = projects.find(p => p.id === pid);
 
       nameEl.addEventListener('mouseenter', () => {
+        if (isMobile()) return;
+        // Filter out gridOnly items — they show on the grid but not in project clusters
+        const projEls = domItems.filter(el => el.dataset.project === pid && el.dataset.gridOnly !== 'true');
 
-  if (isMobile()) return;
+        document.getElementById('grid-overlay').classList.add('active');
 
-  activateProject(pid);
-
-});
+        domItems.forEach(el => {
+          if (el.dataset.project === pid) {
+            el.classList.add('highlighted');
+            el.classList.remove('faded');
+            el.style.opacity       = '1';
+            el.style.pointerEvents = 'auto';
+            // Unmute video when its project is active
+            const v = el.querySelector('video');
+            if (v) v.muted = false;
+          } else {
+            el.classList.add('faded');
+            el.classList.remove('highlighted');
+            // Mute any other videos
+            const v = el.querySelector('video');
+            if (v) v.muted = true;
+          }
+        });
 
         const layout = clusterLayout(projEls, pid);
         projEls.forEach((el, i) => {
@@ -738,13 +602,13 @@ function deactivateProject() {
         }
       });
 
-     nameEl.addEventListener('mouseleave', () => {
-
-  if (isMobile()) return;
-
-  deactivateProject();
-
-});
+      nameEl.addEventListener('mouseleave', () => {
+        if (isMobile()) return;
+        document.getElementById('grid-overlay').classList.remove('active');
+        // Mute all videos on reset
+        domItems.forEach(el => { const v = el.querySelector('video'); if (v) v.muted = true; });
+        resetMoodboard();
+      });
 
       nameEl.addEventListener('click', () => {
         if (!isMobile()) return;
