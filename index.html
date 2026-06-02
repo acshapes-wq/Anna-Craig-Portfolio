@@ -55,7 +55,7 @@
       justify-content: center; align-items: center; z-index: 2000;
     }
     .modal-content {
-      background: rgba(240,248,255,0.92);
+      background: rgba(255,255,255,0.96);
       padding: 15px 25px; max-width: 300px; width: 90%;
       position: relative; text-align: center;
     }
@@ -159,7 +159,7 @@
       .modal-content { padding: 25px; width: 95%; }
       .modal-content p { margin-bottom: 12px; }
 
-      #modal-work { overflow-y: auto; background: #fff; }
+      #modal-work { overflow-y: auto; background: #fff !important; }
       #close-work { top: 14px; right: 14px; font-size: 0.55rem; }
 
       /* Two-column grid */
@@ -168,8 +168,9 @@
         height: auto !important;
         display: grid !important;
         grid-template-columns: 1fr 1fr;
-        gap: 3px;
-        padding: 50px 3px 80px;
+        gap: 2px;
+        padding: 50px 0 80px;
+        background: #fff !important;
       }
       .mood-item {
         position: relative !important;
@@ -291,7 +292,15 @@
     document.querySelectorAll('.close').forEach(btn => {
       btn.onclick = () => { document.getElementById(btn.dataset.close).style.display = 'none'; };
     });
-    window.onclick = e => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; };
+    // Close modals on click or touch of backdrop (works on mobile and desktop)
+    ['click', 'touchend'].forEach(evt => {
+      window.addEventListener(evt, e => {
+        if (e.target.classList.contains('modal')) {
+          e.preventDefault();
+          e.target.style.display = 'none';
+        }
+      });
+    });
 
     const projects = [
       { id: 'notinservice', name: 'Not In Service',             client: 'Six Dots Design',         credit: 'Solo Creative Direction & Production'  },
@@ -334,11 +343,11 @@
       'folly2.jpeg',
       'balancing1.jpeg',
       'lifestyle1.jpeg',
-      'carousel1.jpeg',
       'inhisname1.jpeg',
       'sol1.jpeg',
       'starta1.jpeg',
       'product1.jpeg',
+      'carousel1.jpeg',
       'balancing2.jpeg',
     ];
 
