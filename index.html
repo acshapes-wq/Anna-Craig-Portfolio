@@ -155,47 +155,81 @@
     @media (max-width: 768px) {
       .text-container { padding: 40px 30px; width: 90%; }
       .text-container h1 { font-size: 2rem; }
-      .subtitle { font-size: 0.9rem; }
       .nav-links { flex-direction: column; gap: 15px; }
       .modal-content { padding: 25px; width: 95%; }
       .modal-content p { margin-bottom: 12px; }
 
-      #modal-work { overflow-y: auto; }
+      #modal-work { overflow-y: auto; background: #fff; }
+      #close-work { top: 14px; right: 14px; font-size: 0.55rem; }
 
+      /* Two-column grid */
       #moodboard-canvas {
         position: relative !important;
         height: auto !important;
         display: grid !important;
         grid-template-columns: 1fr 1fr;
         gap: 3px;
-        padding: 52px 3px 150px;
+        padding: 50px 3px 80px;
       }
       .mood-item {
         position: relative !important;
         left: auto !important; top: auto !important;
         width: 100% !important; height: auto !important;
         transform: none !important;
-        transition: opacity 0.4s ease !important;
+        opacity: 1 !important;
+        transition: opacity 0.3s ease !important;
+        cursor: pointer;
       }
       .mood-item img, .mood-item video {
-        width: 100%; height: auto; object-fit: unset;
+        width: 100%; height: auto; object-fit: unset; display: block;
       }
-      .mood-item.highlighted-mobile { order: -1; opacity: 1; }
-      .mood-item.faded-mobile        { order: 99; opacity: 0.07; }
+      /* Hide non-grid items on mobile grid */
+      .mood-item.mobile-hidden { display: none !important; }
 
-      #project-list {
-        bottom: 10px; left: 10px; right: 10px;
-        display: flex; flex-wrap: wrap; gap: 3px 10px; align-items: center;
-      }
-      .proj-item { margin-bottom: 0; }
-      .proj-name { display: inline; font-size: 0.46rem; }
+      /* Project list hidden on mobile — navigation is via image taps */
+      #project-list { display: none; }
 
-      #work-credit {
-        bottom: 10px; left: auto; right: 10px;
-        transform: none; text-align: right;
-        font-size: 0.42rem; white-space: normal; max-width: 48vw;
+      /* Grid overlay on mobile */
+      #grid-overlay { background: rgba(255,255,255,0.92); }
+
+      /* Mobile project overlay */
+      #mobile-project-overlay {
+        display: none;
+        position: fixed; top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: #fff;
+        z-index: 2000;
+        overflow-y: auto;
+        padding: 50px 12px 100px;
+        box-sizing: border-box;
       }
-      #close-work { top: 14px; right: 14px; }
+      #mobile-project-overlay.active { display: block; }
+      #mobile-close-btn {
+        position: fixed; top: 14px; right: 16px;
+        background: none; border: none;
+        color: rgba(0,0,0,0.3);
+        font-size: 0.55rem; font-family: 'Work Sans', sans-serif;
+        letter-spacing: 3px; cursor: pointer; z-index: 2010;
+        text-transform: lowercase;
+      }
+      #mobile-project-images {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      #mobile-project-images img,
+      #mobile-project-images video {
+        width: 100%; height: auto; display: block;
+      }
+      #mobile-project-credit {
+        margin-top: 18px;
+        color: rgba(0,0,0,0.6);
+        font-size: 0.55rem;
+        letter-spacing: 3px;
+        font-weight: 300;
+        font-family: 'Work Sans', sans-serif;
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -242,6 +276,13 @@
     <div id="moodboard-canvas"></div>
     <div id="project-list"></div>
     <div id="work-credit"></div>
+  </div>
+
+  <!-- Mobile project overlay -->
+  <div id="mobile-project-overlay">
+    <button id="mobile-close-btn">close</button>
+    <div id="mobile-project-images"></div>
+    <div id="mobile-project-credit"></div>
   </div>
 
   <script>
@@ -337,6 +378,62 @@
       canvas.appendChild(el);
       return el;
     });
+
+    // ── Mobile: mark non-grid items as hidden in the grid ────────────────
+    function setupMobileGrid() {
+      domItems.forEach(el => {
+        const file = allItems[parseInt(el.dataset.index)].file;
+        if (!gridFiles.includes(file)) {
+          el.classList.add('mobile-hidden');
+        }
+      });
+    }
+    if (isMobile()) setupMobileGrid();
+
+    // ── Mobile project overlay ─────────────────────────────────────────────
+    function showMobileProject(pid) {
+      activeProject = pid;
+      const proj    = projects.find(p => p.id === pid);
+      const overlay = document.getElementById('mobile-project-overlay');
+      const imgWrap = document.getElementById('mobile-project-images');
+      const credit  = document.getElementById('mobile-project-credit');
+
+      imgWrap.innerHTML = '';
+
+      // Get all non-gridOnly items for this project
+      allItems.forEach(item => {
+        if (item.project !== pid || item.gridOnly) return;
+        if (item.video) {
+          const v = document.createElement('video');
+          v.autoplay = true; v.muted = true; v.loop = true; v.playsInline = true;
+          v.setAttribute('loop', '');
+          ['video/mp4', 'video/quicktime'].forEach(type => {
+            const s = document.createElement('source');
+            s.src = item.file; s.type = type;
+            v.appendChild(s);
+          });
+          imgWrap.appendChild(v);
+        } else {
+          const img = document.createElement('img');
+          img.src = item.file; img.alt = ''; img.loading = 'lazy';
+          imgWrap.appendChild(img);
+        }
+      });
+
+      if (proj) {
+        credit.textContent = proj.credit + ' — ' + proj.client;
+      }
+
+      overlay.classList.add('active');
+      overlay.scrollTop = 0;
+    }
+
+    function hideMobileProject() {
+      activeProject = null;
+      document.getElementById('mobile-project-overlay').classList.remove('active');
+    }
+
+    document.getElementById('mobile-close-btn').addEventListener('click', hideMobileProject);
 
     projects.forEach(proj => {
       const d = document.createElement('div');
@@ -599,25 +696,30 @@
       resetMoodboard();
     }
 
-    // ── Wire up grid image hover ──────────────────────────────────────────
+    // ── Wire up grid image clicks ─────────────────────────────────────────
     domItems.forEach(el => {
       el.style.cursor = 'pointer';
-      el.addEventListener('mouseenter', () => {
-        if (isMobile() || activeProject) return;
-        showProject(el.dataset.project);
-      });
-      el.addEventListener('mouseleave', () => {
-        if (isMobile() || activeProject) return;
-        document.getElementById('grid-overlay').classList.remove('active');
-        domItems.forEach(e => { const v = e.querySelector('video'); if (v) v.muted = true; });
-        resetMoodboard();
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const pid = el.dataset.project;
+        if (isMobile()) {
+          // mobile: toggle project overlay
+          if (activeProject === pid) { hideMobileProject(); return; }
+          showMobileProject(pid);
+          return;
+        }
+        if (activeProject === pid) { hideProject(); return; }
+        activeProject = pid;
+        showProject(pid);
       });
     });
 
-    // Click anywhere on the work modal closes any open project
+    // Click anywhere on the work modal (not on image/project-name) closes
     document.getElementById('modal-work').addEventListener('click', (e) => {
-      if (isMobile()) return;
-      if (activeProject) hideProject();
+      if (activeProject) {
+        if (isMobile()) hideMobileProject();
+        else hideProject();
+      }
     });
 
     // ── Project name list: hover previews, click locks ────────────────────
@@ -638,7 +740,11 @@
 
       nameEl.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (isMobile()) return;
+        if (isMobile()) {
+          if (activeProject === pid) { hideMobileProject(); return; }
+          showMobileProject(pid);
+          return;
+        }
         if (activeProject === pid) {
           hideProject();
         } else {
@@ -647,40 +753,13 @@
         }
       });
 
-      nameEl.addEventListener('click', () => {
-        if (!isMobile()) return;
-        const isActive = nameEl.classList.contains('active');
-
-        document.querySelectorAll('.proj-name').forEach(n => n.classList.remove('active'));
-        domItems.forEach(el => {
-          el.classList.remove('highlighted-mobile', 'faded-mobile');
-          el.style.order = '';
-        });
-        creditEl.classList.remove('visible');
-
-        if (!isActive) {
-          nameEl.classList.add('active');
-          domItems.forEach(el => {
-            if (el.dataset.project === pid) {
-              el.classList.add('highlighted-mobile');
-              el.style.order = '-1';
-            } else {
-              el.classList.add('faded-mobile');
-              el.style.order = '99';
-            }
-          });
-          if (proj) {
-            creditEl.textContent = `${proj.credit} — ${proj.client}`;
-            creditEl.classList.add('visible');
-          }
-          document.getElementById('modal-work').scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      });
+      // mobile nav via image taps — handled in domItems click listener
     });
 
     document.getElementById('open-work').onclick = () => {
       document.getElementById('modal-work').style.display = 'block';
-      if (!isMobile()) setTimeout(layoutDesktop, 60);
+      if (isMobile()) setupMobileGrid();
+      else setTimeout(layoutDesktop, 60);
     };
 
     document.getElementById('close-work').onclick = () => {
@@ -690,7 +769,9 @@
     };
 
     window.addEventListener('resize', () => {
-      if (!isMobile() && document.getElementById('modal-work').style.display === 'block') {
+      if (isMobile()) {
+        setupMobileGrid();
+      } else if (document.getElementById('modal-work').style.display === 'block') {
         origPos.length = 0;
         layoutDesktop();
       }
