@@ -47,45 +47,52 @@
     }
     .nav-links button:hover { opacity: 0.6; }
 
-    /* ── SMALL MODALS ── */
-    .modal {
-      display: none; position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      justify-content: center; align-items: center; z-index: 2000;
+    /* ── PERMANENT ABOUT / CONTACT INFO (top left over hero video) ── */
+    .hero-info {
+      position: fixed;
+      top: 28px; left: 28px;
+      z-index: 2;
+      max-width: 260px;
+      color: rgba(255,255,255,0.85);
     }
-    .modal-content {
-      background: rgba(255,255,255,0.96);
-      padding: 15px 25px; max-width: 300px; width: 90%;
-      position: relative; text-align: center;
+    .hero-info p {
+      font-size: 0.55rem;
+      font-weight: 300;
+      letter-spacing: 1.5px;
+      margin-bottom: 4px;
     }
-    .modal-content p {
-      margin-bottom: 5px; font-weight: lighter;
-      font-size: 0.75rem; color: #1a1a1a;
+    .hero-info .hero-tagline {
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+      color: #fff;
     }
-    .modal-content a { color: #1a1a1a; text-decoration: none; }
-    .modal-content a:hover { opacity: 0.8; }
-    /* close via clicking backdrop only — no X button */
-    .location-info { margin-top: 20px; }
+    .hero-info .hero-meta {
+      margin-top: 14px;
+      color: rgba(255,255,255,0.6);
+    }
+    .hero-info a {
+      display: block;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.55rem;
+      font-weight: 300;
+      letter-spacing: 1.5px;
+      margin-bottom: 4px;
+      transition: opacity 0.3s;
+    }
+    .hero-info a:hover { opacity: 0.6; }
+    .hero-info .hero-links { margin-top: 14px; }
 
-    /* ── WORK MODAL ── */
+    /* ── PERMANENT INFO USES ITS OWN STYLES ABOVE; small modal styles removed ── */
+
     #modal-work {
       display: none; position: fixed; top: 0; left: 0;
       width: 100%; height: 100%;
       background: #ffffff;
-      z-index: 1000; overflow-y: auto;
+      z-index: 1000; overflow: hidden;
     }
-
-    /* Overlay that fades over the grid when a project is hovered */
-    #grid-overlay {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(255,255,255,0.82);
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.4s ease;
-      z-index: 40;
-    }
-    #grid-overlay.active { opacity: 1; }
 
     #close-work {
       position: fixed; top: 22px; right: 28px;
@@ -97,148 +104,118 @@
     }
     #close-work:hover { color: rgba(0,0,0,0.55); }
 
-    #moodboard-canvas { position: relative; width: 100%; background: #fff; }
-
-    .mood-item {
-      position: absolute;
+    .slideshow-wrap {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 30px 24px 30px 60px;
+      position: relative;
       overflow: hidden;
-      background: transparent;
-      transition:
-        opacity 0.5s ease,
-        left   0.7s cubic-bezier(0.25,0.46,0.45,0.94),
-        top    0.7s cubic-bezier(0.25,0.46,0.45,0.94),
-        width  0.7s cubic-bezier(0.25,0.46,0.45,0.94),
-        height 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
     }
-    .mood-item img, .mood-item video {
+
+    .slide-count {
+      font-size: 0.55rem;
+      font-weight: 300;
+      letter-spacing: 2.5px;
+      color: rgba(0,0,0,0.3);
+      margin-bottom: 12px;
+      text-transform: lowercase;
+    }
+
+    .slide-media {
+      position: relative;
+      height: 56vh;
+      aspect-ratio: 4 / 5;
+    }
+
+    .slide-image-frame {
+      width: 100%;
+      height: 100%;
+      background: #f4f4f2;
+      border: 1px dashed rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      user-select: none;
+    }
+    .slide-image-frame img {
       width: 100%; height: 100%;
       object-fit: cover; display: block;
     }
-    .mood-item.contain img {
-      object-fit: contain;
-      background: transparent;
-    }
-    .mood-item.faded { opacity: 0.05; }
-    .mood-item.highlighted { opacity: 1; z-index: 50 !important; }
-
-    /* Project list — bottom left */
-    #project-list {
-      position: fixed; bottom: 28px; left: 28px;
-      z-index: 1005;
-    }
-    .proj-item { margin-bottom: 5px; }
-    .proj-name {
-      display: block;
-      color: rgba(255,255,255,0.5);
-      font-size: 0.6rem; font-weight: 300;
-      letter-spacing: 2.5px;
-      font-family: 'Work Sans', sans-serif;
-      cursor: pointer; transition: color 0.3s;
-    }
-    .proj-name:hover, .proj-name.active { color: rgba(255,255,255,0.95); }
-
-    /* Credit — bottom centre */
-    #work-credit {
-      position: fixed; bottom: 28px; left: 50%;
-      transform: translateX(-50%);
+    .slide-placeholder-text {
+      font-size: 0.55rem;
+      font-weight: 300;
+      letter-spacing: 2px;
+      color: rgba(0,0,0,0.3);
       text-align: center;
-      color: rgba(0,0,0,0.75);
-      font-size: 0.65rem; letter-spacing: 3px; font-weight: 300;
-      font-family: 'Work Sans', sans-serif;
-      opacity: 0; transition: opacity 0.4s;
-      pointer-events: none; white-space: nowrap;
-      z-index: 1005;
+      padding: 20px;
+      text-transform: lowercase;
     }
-    #work-credit.visible { opacity: 1; }
+
+    .slide-next-btn {
+      position: absolute;
+      bottom: 10px; right: 10px;
+      width: 28px; height: 28px;
+      background: rgba(255,255,255,0.9);
+      border: none;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: #1a1a1a;
+      font-size: 0.8rem;
+      transition: background 0.3s;
+      z-index: 5;
+    }
+    .slide-next-btn:hover { background: #fff; }
+
+    .slide-description {
+      max-width: 460px;
+      width: 100%;
+      margin-top: 16px;
+      font-size: 0.6rem;
+      font-weight: 300;
+      letter-spacing: 1.5px;
+      color: rgba(0,0,0,0.55);
+      text-align: left;
+    }
+
+    #commercial-link {
+      position: fixed;
+      bottom: 22px; left: 28px;
+      font-size: 0.55rem;
+      font-weight: 400;
+      letter-spacing: 2px;
+      color: #1a1a1a;
+      text-decoration: none;
+      text-transform: lowercase;
+      z-index: 1005;
+      padding-bottom: 1px;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    #commercial-link:hover { border-bottom-color: #1a1a1a; }
 
     /* ── MOBILE ── */
     @media (max-width: 768px) {
       .text-container { padding: 40px 30px; width: 90%; }
       .text-container h1 { font-size: 2rem; }
       .nav-links { flex-direction: column; gap: 15px; }
+      .hero-info { top: 18px; left: 18px; max-width: 200px; }
+      .hero-info p, .hero-info a { font-size: 0.48rem; }
+      .hero-info .hero-tagline { font-size: 0.52rem; }
       .modal-content { padding: 25px; width: 95%; }
       .modal-content p { margin-bottom: 12px; }
 
       #modal-work { overflow-y: auto; background: #fff !important; }
       #close-work { top: 14px; right: 14px; font-size: 0.55rem; }
 
-      /* Two-column masonry via CSS columns */
-      #moodboard-canvas {
-        position: relative !important;
-        height: auto !important;
-        display: block !important;
-        column-count: 2;
-        column-gap: 2px;
-        padding: 50px 0 80px;
-        background: #fff !important;
-      }
-      .mood-item {
-        position: relative !important;
-        left: auto !important; top: auto !important;
-        width: 100% !important; height: auto !important;
-        transform: none !important;
-        opacity: 1 !important;
-        transition: opacity 0.3s ease !important;
-        cursor: pointer;
-        break-inside: avoid;
-        display: block;
-        margin: 0 0 2px 0;
-        padding: 0;
-        font-size: 0;
-        line-height: 0;
-        background: transparent !important;
-      }
-      .mood-item img, .mood-item video {
-        width: 100%; height: auto; display: block;
-        margin: 0; padding: 0; vertical-align: top;
-      }
-      /* Hide non-grid items on mobile grid */
-      .mood-item.mobile-hidden { display: none !important; }
-
-      /* Project list hidden on mobile — navigation is via image taps */
-      #project-list { display: none; }
-
-      /* Grid overlay on mobile */
-      #grid-overlay { background: rgba(255,255,255,0.92); }
-
-      /* Mobile project overlay */
-      #mobile-project-overlay {
-        display: none;
-        position: fixed; top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: #fff;
-        z-index: 2000;
-        overflow-y: auto;
-        padding: 50px 12px 100px;
-        box-sizing: border-box;
-      }
-      #mobile-project-overlay.active { display: block; }
-      #mobile-close-btn {
-        position: fixed; top: 14px; right: 16px;
-        background: none; border: none;
-        color: rgba(0,0,0,0.3);
-        font-size: 0.55rem; font-family: 'Work Sans', sans-serif;
-        letter-spacing: 3px; cursor: pointer; z-index: 2010;
-        text-transform: lowercase;
-      }
-      #mobile-project-images {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
-      #mobile-project-images img,
-      #mobile-project-images video {
-        width: 100%; height: auto; display: block;
-      }
-      #mobile-project-credit {
-        margin-top: 18px;
-        color: rgba(0,0,0,0.6);
-        font-size: 0.55rem;
-        letter-spacing: 3px;
-        font-weight: 300;
-        font-family: 'Work Sans', sans-serif;
-        text-align: center;
-      }
+      .slideshow-wrap { padding: 60px 20px 20px; align-items: center; }
+      .slide-media { height: 46vh; }
+      .slide-description { max-width: 100%; }
+      #commercial-link { bottom: 18px; left: 18px; }
     }
   </style>
 </head>
@@ -251,578 +228,104 @@
     </video>
   </div>
 
+  <div class="hero-info">
+    <p class="hero-tagline">Visual artist and art director</p>
+    <p>Working across concept, styling and installation, with a studio practice in painting, natural pigment and ceramics.</p>
+    <div class="hero-meta">
+      <p>b. 1995</p>
+      <p>Based in St Leonards-on-Sea / London</p>
+    </div>
+    <div class="hero-links">
+      <a href="mailto:acshapes@gmail.com">acshapes@gmail.com</a>
+      <a href="https://www.instagram.com/acshapes/" target="_blank">@acshapes</a>
+    </div>
+  </div>
+
   <div class="content-overlay">
     <div class="text-container">
       <h1>AnnaCraig</h1>
       <div class="nav-links">
-        <button id="open-about">about</button>
         <button id="open-work">work</button>
-        <button id="open-contact">contact</button>
       </div>
-    </div>
-  </div>
-
-  <div id="modal-about" class="modal">
-    <div class="modal-content">
-      <p>Visual artist and art director
-Working across concept, styling and installation, with a studio practice in painting, natural pigment and ceramics.</p>
-      <div class="location-info">
-        <p>b. 1995</p>
-        <p>Based in St Leonards-on-Sea / London</p>
-      </div>
-    </div>
-  </div>
-
-  <div id="modal-contact" class="modal">
-    <div class="modal-content">
-      <p><a href="mailto:acshapes@gmail.com">acshapes@gmail.com</a></p>
-      <p><a href="https://www.instagram.com/acshapes/" target="_blank">@acshapes</a></p>
     </div>
   </div>
 
   <div id="modal-work">
     <button id="close-work">close</button>
-    <div id="grid-overlay"></div>
-    <div id="moodboard-canvas"></div>
-    <div id="project-list"></div>
-    <div id="work-credit"></div>
-  </div>
 
-  <!-- Mobile project overlay -->
-  <div id="mobile-project-overlay">
-    <button id="mobile-close-btn">close</button>
-    <div id="mobile-project-images"></div>
-    <div id="mobile-project-credit"></div>
+    <div class="slideshow-wrap">
+      <div class="slide-count" id="slide-count"></div>
+
+      <div class="slide-media">
+        <div class="slide-image-frame" id="slide-image-frame">
+          <!-- image or placeholder injected by JS -->
+        </div>
+        <button class="slide-next-btn" id="slide-next-btn" aria-label="Next image">&#8594;</button>
+      </div>
+
+      <div class="slide-description" id="slide-description"></div>
+    </div>
+
+    <a id="commercial-link" href="commercial-work.html">commercial work</a>
   </div>
 
   <script>
-    document.getElementById('open-about').onclick  = () => { document.getElementById('modal-about').style.display  = 'flex'; };
-    document.getElementById('open-contact').onclick = () => { document.getElementById('modal-contact').style.display = 'flex'; };
-    document.querySelectorAll('.close').forEach(btn => {
-      btn.onclick = () => { document.getElementById(btn.dataset.close).style.display = 'none'; };
-    });
-    // Close modals on click or touch of backdrop (works on mobile and desktop)
-    ['click', 'touchend'].forEach(evt => {
-      window.addEventListener(evt, e => {
-        if (e.target.classList.contains('modal')) {
-          e.preventDefault();
-          e.target.style.display = 'none';
-        }
-      });
-    });
+    // About and contact are now permanent on-screen text (see .hero-info) — no popup JS needed.
 
-    const projects = [
-      { id: 'notinservice', name: 'Not In Service',             client: 'Six Dots Design',         credit: 'Solo Creative Direction & Production'  },
-      { id: 'folly',        name: 'A Folly Through The Trees',  client: 'Six Dots Design',         credit: 'Fabric Installation & Spatial Design'  },
-      { id: 'balancing',    name: 'Balancing Art',              client: 'Six Dots Design',         credit: 'Photography & Creative Direction'       },
-      { id: 'lifestyle',    name: 'Lifestyle',                  client: 'Six Dots Design',         credit: 'Photography & Creative Direction'       },
-      { id: 'carousel',     name: 'Retail Window Installation', client: 'Carousel Jewels',         credit: 'Concept, Design & Installation'         },
-      { id: 'film',         name: 'In His Name',                client: 'Lemon Top Pictures',      credit: 'Costume Design & Styling'              },
-      { id: 'sol',          name: 'Sol Paradise',               client: 'Just Jump In Production', credit: 'Styling & Production Assistant'         },
-      { id: 'starta',       name: 'The Aztek Shirt',            client: 'st arta',                 credit: 'Styling & Location Research'            },
-      { id: 'product',      name: 'Product Shots',              client: 'Six Dots Design',         credit: 'Photography & Creative Direction'       },
+    // ── SELECTED WORKS SLIDESHOW ─────────────────────────────────────────
+    // Fill in `file` with the real image filename once ready (e.g. 'work1.jpg'),
+    // and write the real caption in `description`. Leaving `file` empty shows
+    // a placeholder box so you can see the layout before the photos exist.
+    const slides = [
+      { file: '', description: 'Add description for image 1' },
+      { file: '', description: 'Add description for image 2' },
+      { file: '', description: 'Add description for image 3' },
+      { file: '', description: 'Add description for image 4' },
+      { file: '', description: 'Add description for image 5' },
+      { file: '', description: 'Add description for image 6' },
+      { file: '', description: 'Add description for image 7' },
+      { file: '', description: 'Add description for image 8' },
     ];
 
-    // All images — used for project hover clusters
-    const allItems = [
-      { file: 'notinservice1.jpeg', project: 'notinservice', aspect: 0.75,  gridOnly: true },
-      { file: 'notinservice.mov',   project: 'notinservice', aspect: 1.78,  video: true    },
-      { file: 'folly2.jpeg',        project: 'folly',        aspect: 0.75,  gridOnly: true },
-      { file: 'folly1.jpeg',        project: 'folly',        aspect: 0.75        },
-      { file: 'folly4.jpeg',        project: 'folly',        aspect: 1.5         },
-      { file: 'balancing1.jpeg',    project: 'balancing',    aspect: 0.75,  gridOnly: true },
-      { file: 'balancing2.jpeg',    project: 'balancing',    aspect: 0.75,  gridOnly: true },
-      { file: 'balancing3.jpeg',    project: 'balancing',    aspect: 1.5         },
-      { file: 'balancing4.jpeg',    project: 'balancing',    aspect: 1.0         },
-      { file: 'lifestyle1.jpeg',    project: 'lifestyle',    aspect: 0.75        },
-      { file: 'lifestyle3.jpeg',    project: 'lifestyle',    aspect: 1.5         },
-      { file: 'carousel1.jpeg',     project: 'carousel',     aspect: 0.75        },
-      { file: 'carousel2.jpeg',     project: 'carousel',     aspect: 0.75        },
-      { file: 'inhisname1.jpeg',    project: 'film',         aspect: 0.75        },
-      { file: 'inhisname2.jpeg',    project: 'film',         aspect: 1.5         },
-      { file: 'sol1.jpeg',          project: 'sol',          aspect: 0.75        },
-      { file: 'sol3.jpeg',          project: 'sol',          aspect: 1.5         },
-      { file: 'starta1.jpeg',       project: 'starta',       aspect: 1.78        },
-      { file: 'product1.jpeg',      project: 'product',      aspect: 0.75        },
-    ];
+    let currentSlide = 0;
+    const frameEl = document.getElementById('slide-image-frame');
+    const descEl  = document.getElementById('slide-description');
+    const countEl = document.getElementById('slide-count');
 
-    // Curated 12 shown in the grid, in this exact order
-    const gridFiles = [
-      'notinservice1.jpeg',
-      'folly2.jpeg',
-      'balancing1.jpeg',
-      'lifestyle1.jpeg',
-      'carousel1.jpeg',
-      'inhisname1.jpeg',
-      'sol1.jpeg',
-      'starta1.jpeg',
-      'product1.jpeg',
-      'balancing2.jpeg',
-    ];
+    function renderSlide() {
+      const slide = slides[currentSlide];
+      frameEl.innerHTML = '';
 
-    const mobileGridFiles = [
-      'balancing1.jpeg',
-      'folly2.jpeg',
-      'notinservice1.jpeg',
-      'inhisname1.jpeg',
-      'sol1.jpeg',
-      'starta1.jpeg',
-      'product1.jpeg',
-      'lifestyle1.jpeg',
-      'carousel1.jpeg',
-    ];
-    const mobileColumnBreakBefore = 'sol1.jpeg'; // force into right column
-
-    const items = allItems;
-
-    const canvas     = document.getElementById('moodboard-canvas');
-    const projListEl = document.getElementById('project-list');
-    const creditEl   = document.getElementById('work-credit');
-
-    const domItems = items.map((item, i) => {
-      const el = document.createElement('div');
-      el.className = 'mood-item';
-      el.dataset.project  = item.project;
-      el.dataset.index    = i;
-      el.dataset.aspect   = item.aspect;
-      el.dataset.gridOnly = item.gridOnly ? 'true' : 'false';
-
-      if (item.video) {
-        const v = document.createElement('video');
-        // notinservice video plays with sound in project view
-        v.autoplay = true; v.muted = true; v.loop = true; v.playsInline = true;
-        v.setAttribute('loop', '');
-        v.dataset.projectVideo = 'true';
-        // Try both MIME types for .mov compatibility across browsers
-        ['video/mp4', 'video/quicktime'].forEach(type => {
-          const s = document.createElement('source');
-          s.src = item.file; s.type = type;
-          v.appendChild(s);
-        });
-        el.appendChild(v);
-      } else {
+      if (slide.file) {
         const img = document.createElement('img');
-        img.src = item.file; img.alt = ''; img.loading = 'lazy';
-        el.appendChild(img);
+        img.src = slide.file;
+        img.alt = slide.description || '';
+        frameEl.appendChild(img);
+      } else {
+        const placeholder = document.createElement('div');
+        placeholder.className = 'slide-placeholder-text';
+        placeholder.textContent = 'image ' + (currentSlide + 1) + ' — add file to slides array';
+        frameEl.appendChild(placeholder);
       }
 
-      canvas.appendChild(el);
-      return el;
-    });
-
-    // ── Mobile: mark non-grid items as hidden in the grid ────────────────
-    function setupMobileGrid() {
-      const canvas = document.getElementById('moodboard-canvas');
-      // Hide all first
-      domItems.forEach(el => el.classList.add('mobile-hidden'));
-
-      // CSS columns flow top-to-bottom, left-to-right.
-      // To get col1=[0,2,4,6,8] and col2=[1,3,5,7], we interleave into
-      // two virtual columns then append in column order.
-      const col1Files = mobileGridFiles.filter((_, i) => i % 2 === 0);
-      const col2Files = mobileGridFiles.filter((_, i) => i % 2 === 1);
-      const orderedFiles = [...col1Files, ...col2Files];
-      // Not ideal — CSS columns reflow automatically, so just append in reading order
-      // and let the browser handle column assignment naturally.
-      mobileGridFiles.forEach(file => {
-        const idx = allItems.findIndex(it => it.file === file);
-        if (idx === -1) return;
-        const el = domItems[idx];
-        el.classList.remove('mobile-hidden');
-        el.style.breakBefore = (file === mobileColumnBreakBefore) ? 'column' : '';
-        canvas.appendChild(el);
-      });
-    }
-    if (isMobile()) setupMobileGrid();
-
-    // ── Mobile project overlay ─────────────────────────────────────────────
-    function showMobileProject(pid) {
-      activeProject = pid;
-      const proj    = projects.find(p => p.id === pid);
-      const overlay = document.getElementById('mobile-project-overlay');
-      const imgWrap = document.getElementById('mobile-project-images');
-      const credit  = document.getElementById('mobile-project-credit');
-
-      imgWrap.innerHTML = '';
-
-      // Get all non-gridOnly items for this project
-      allItems.forEach(item => {
-        if (item.project !== pid || item.gridOnly) return;
-        if (item.video) {
-          const v = document.createElement('video');
-          v.autoplay = true; v.muted = true; v.loop = true; v.playsInline = true;
-          v.setAttribute('loop', '');
-          ['video/mp4', 'video/quicktime'].forEach(type => {
-            const s = document.createElement('source');
-            s.src = item.file; s.type = type;
-            v.appendChild(s);
-          });
-          imgWrap.appendChild(v);
-        } else {
-          const img = document.createElement('img');
-          img.src = item.file; img.alt = ''; img.loading = 'lazy';
-          imgWrap.appendChild(img);
-        }
-      });
-
-      if (proj) {
-        credit.textContent = proj.credit + ' — ' + proj.client;
-      }
-
-      overlay.classList.add('active');
-      overlay.scrollTop = 0;
+      descEl.textContent = slide.description || '';
+      countEl.textContent = (currentSlide + 1) + ' / ' + slides.length;
     }
 
-    function hideMobileProject() {
-      activeProject = null;
-      document.getElementById('mobile-project-overlay').classList.remove('active');
-    }
-
-    document.getElementById('mobile-close-btn').addEventListener('click', hideMobileProject);
-    // Tap anywhere on mobile overlay to close
-    document.getElementById('mobile-project-overlay').addEventListener('click', hideMobileProject);
-
-    projects.forEach(proj => {
-      const d = document.createElement('div');
-      d.className = 'proj-item';
-      const s = document.createElement('span');
-      s.className = 'proj-name';
-      s.dataset.project = proj.id;
-      s.textContent = proj.name;
-      d.appendChild(s);
-      projListEl.appendChild(d);
-    });
-
-    const origPos = [];
-
-    function isMobile() { return window.innerWidth <= 768; }
-
-    function interleaveByProject(arr) {
-      const byProject = {};
-      arr.forEach((item, i) => {
-        if (!byProject[item.project]) byProject[item.project] = [];
-        byProject[item.project].push({ item, origIndex: i });
-      });
-      const queues = Object.values(byProject);
-      const result = [];
-      let safety = 0;
-      while (result.length < arr.length && safety++ < 10000) {
-        queues.forEach(q => { if (q.length) result.push(q.shift()); });
-      }
-      return result;
-    }
-
-    function layoutDesktop() {
-      if (isMobile()) return;
-      const W       = canvas.clientWidth;
-      const numCols = 5;
-      const gap     = 12;
-      const padTop  = 55;
-      const padSide = 22;
-      const colW    = (W - padSide * 2 - gap * (numCols - 1)) / numCols;
-      const colH    = new Array(numCols).fill(padTop);
-
-      // Hide all items first
-      domItems.forEach(el => {
-        el.style.opacity      = '0';
-        el.style.pointerEvents = 'none';
-      });
-
-      // Layout only the curated grid items in fixed order
-      gridFiles.forEach(file => {
-        const idx = allItems.findIndex(it => it.file === file);
-        if (idx === -1) return;
-        const item = allItems[idx];
-        const el   = domItems[idx];
-        const imgW = colW;
-        const imgH = imgW / item.aspect;
-
-        let minC = 0;
-        for (let c = 1; c < numCols; c++) {
-          if (colH[c] < colH[minC]) minC = c;
-        }
-
-        const x = padSide + minC * (colW + gap);
-        const y = colH[minC];
-
-        el.style.left          = x + 'px';
-        el.style.top           = y + 'px';
-        el.style.width         = imgW + 'px';
-        el.style.height        = imgH + 'px';
-        el.style.transform     = 'none';
-        el.style.zIndex        = idx + 1;
-        el.style.opacity       = '1';
-        el.style.pointerEvents = 'auto';
-
-        origPos[idx] = { x, y, w: imgW, h: imgH, inGrid: true };
-        colH[minC] += imgH + gap;
-      });
-
-      canvas.style.height = Math.max(...colH) + 60 + 'px';
-    }
-
-    function clusterLayout(projEls, pid) {
-      const vw   = window.innerWidth;
-      const vh   = window.innerHeight;
-      const padX = 50;
-      const padY = 60;
-      const gap  = 28;
-      const availW = vw - padX * 2;
-      const availH = vh - padY * 2;
-
-      function resolveLayout(slots) {
-        const bboxW = Math.max(...slots.map(s => s.x + s.w));
-        const bboxH = Math.max(...slots.map(s => s.y + s.h));
-        const scale  = Math.min(availW / bboxW, availH / bboxH);
-        const totalW = bboxW * scale;
-        const totalH = bboxH * scale;
-        const offX   = (vw - totalW) / 2;
-        const offY   = (vh - totalH) / 2;
-        return slots.map(s => ({
-          x: offX + s.x * scale,
-          y: offY + s.y * scale,
-          w: s.w * scale,
-          h: s.h * scale,
-        }));
-      }
-
-      // NOT IN SERVICE: video only, moderate size centred
-      if (pid === 'notinservice') {
-        const vidW = 700; const vidH = vidW / 1.78;
-        return resolveLayout([{ x: 0, y: 0, w: vidW, h: vidH }]);
-      }
-
-      // FOLLY: folly1 portrait left, folly4 landscape right — vertically centred
-      // projEls order in allItems: folly1, folly4
-      if (pid === 'folly') {
-        const pW = 300; const pH = pW / 0.75;
-        const lW = 540; const lH = lW / 1.5;
-        const totalH = Math.max(pH, lH);
-        return resolveLayout([
-          { x: 0,          y: (totalH - pH) / 2, w: pW, h: pH },
-          { x: pW + gap,   y: (totalH - lH) / 2, w: lW, h: lH },
-        ]);
-      }
-
-      // BALANCING: balancing3 landscape fully uncropped, balancing4 square beside
-      // Use object-fit: contain on balancing3 to never crop
-      if (pid === 'balancing') {
-        const lW = 640; const lH = lW / 1.5;
-        const sW = 300; const sH = sW;
-        const totalH = Math.max(lH, sH);
-        return resolveLayout([
-          { x: 0,        y: (totalH - lH) / 2, w: lW, h: lH },
-          { x: lW + gap, y: (totalH - sH) / 2, w: sW, h: sH },
-        ]);
-      }
-
-      // LIFESTYLE: lifestyle1 portrait left, lifestyle3 landscape right
-      if (pid === 'lifestyle') {
-        const pW = 300; const pH = pW / 0.75;
-        const lW = 520; const lH = lW / 1.5;
-        const totalH = Math.max(pH, lH);
-        return resolveLayout([
-          { x: 0,        y: (totalH - pH) / 2, w: pW, h: pH },
-          { x: pW + gap, y: (totalH - lH) / 2, w: lW, h: lH },
-        ]);
-      }
-
-      // CAROUSEL: two portraits side by side
-      if (pid === 'carousel') {
-        const pW = 320; const pH = pW / 0.75;
-        return resolveLayout([
-          { x: 0,        y: 0, w: pW, h: pH },
-          { x: pW + gap, y: 0, w: pW, h: pH },
-        ]);
-      }
-
-      // IN HIS NAME: portrait large left, landscape right slightly smaller
-      if (pid === 'film') {
-        const pW = 380; const pH = pW / 0.75;
-        const lW = 380; const lH = lW / 1.5;
-        return resolveLayout([
-          { x: 0,        y: 0,             w: pW, h: pH },
-          { x: pW + gap, y: (pH - lH) / 2, w: lW, h: lH },
-        ]);
-      }
-
-      // SOL: sol1 portrait left, sol3 landscape right
-      if (pid === 'sol') {
-        const pW = 320; const pH = pW / 0.75;
-        const lW = 500; const lH = lW / 1.5;
-        const totalH = Math.max(pH, lH);
-        return resolveLayout([
-          { x: 0,        y: (totalH - pH) / 2, w: pW, h: pH },
-          { x: pW + gap, y: (totalH - lH) / 2, w: lW, h: lH },
-        ]);
-      }
-
-      // DEFAULT: single row
-      const n = projEls.length;
-      const imgW = (availW - gap * (n - 1)) / n;
-      let slots = []; let xOff = 0;
-      projEls.forEach(el => {
-        const a = parseFloat(el.dataset.aspect) || 1;
-        slots.push({ x: xOff, y: 0, w: imgW, h: imgW / a });
-        xOff += imgW + gap;
-      });
-      return resolveLayout(slots);
-    }
-
-    function resetMoodboard() {
-      domItems.forEach((el, i) => {
-        el.classList.remove('faded', 'highlighted', 'contain');
-        if (!isMobile()) {
-          if (origPos[i] && origPos[i].inGrid) {
-            const p = origPos[i];
-            el.style.left          = p.x + 'px';
-            el.style.top           = p.y + 'px';
-            el.style.width         = p.w + 'px';
-            el.style.height        = p.h + 'px';
-            el.style.zIndex        = i + 1;
-            el.style.opacity       = '1';
-            el.style.pointerEvents = 'auto';
-          } else {
-            // Not in grid — hide again
-            el.style.opacity       = '0';
-            el.style.pointerEvents = 'none';
-          }
-        }
-      });
-      creditEl.classList.remove('visible');
-      creditEl.textContent = '';
-    }
-
-    // ── Shared function: activate a project cluster ─────────────────────
-    let activeProject = null; // tracks click-locked project
-
-    function showProject(pid) {
-      const proj    = projects.find(p => p.id === pid);
-      const projEls = domItems.filter(el => el.dataset.project === pid && el.dataset.gridOnly !== 'true');
-
-      document.getElementById('grid-overlay').classList.add('active');
-
-      domItems.forEach(el => {
-        if (el.dataset.project === pid) {
-          el.classList.add('highlighted'); el.classList.remove('faded');
-          el.style.opacity = '1'; el.style.pointerEvents = 'auto';
-          const v = el.querySelector('video'); if (v) v.muted = false;
-          // balancing3 should never be cropped
-          const src = el.querySelector('img') ? el.querySelector('img').src : '';
-          if (src.includes('balancing3')) el.classList.add('contain');
-        } else {
-          el.classList.add('faded'); el.classList.remove('highlighted');
-          const v = el.querySelector('video'); if (v) v.muted = true;
-        }
-      });
-
-      const layout = clusterLayout(projEls, pid);
-      projEls.forEach((el, i) => {
-        const L = layout[i];
-        el.style.left = L.x + 'px'; el.style.top = L.y + 'px';
-        el.style.width = L.w + 'px'; el.style.height = L.h + 'px';
-        el.style.zIndex = 60 + i;
-      });
-
-      // Highlight matching proj-name in list
-      document.querySelectorAll('.proj-name').forEach(n => {
-        n.classList.toggle('active', n.dataset.project === pid);
-      });
-
-      if (proj) {
-        creditEl.textContent = `${proj.credit} — ${proj.client}`;
-        creditEl.classList.add('visible');
-      }
-    }
-
-    function hideProject() {
-      activeProject = null;
-      document.getElementById('grid-overlay').classList.remove('active');
-      domItems.forEach(el => { const v = el.querySelector('video'); if (v) v.muted = true; });
-      document.querySelectorAll('.proj-name').forEach(n => n.classList.remove('active'));
-      resetMoodboard();
-    }
-
-    // ── Wire up grid image clicks ─────────────────────────────────────────
-    domItems.forEach(el => {
-      el.style.cursor = 'pointer';
-      el.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const pid = el.dataset.project;
-        if (isMobile()) {
-          // mobile: toggle project overlay
-          if (activeProject === pid) { hideMobileProject(); return; }
-          showMobileProject(pid);
-          return;
-        }
-        if (activeProject === pid) { hideProject(); return; }
-        activeProject = pid;
-        showProject(pid);
-      });
-    });
-
-    // Click anywhere on the work modal (not on image/project-name) closes
-    document.getElementById('modal-work').addEventListener('click', (e) => {
-      if (activeProject) {
-        if (isMobile()) hideMobileProject();
-        else hideProject();
-      }
-    });
-
-    // ── Project name list: hover previews, click locks ────────────────────
-    document.querySelectorAll('.proj-name').forEach(nameEl => {
-      const pid  = nameEl.dataset.project;
-
-      nameEl.addEventListener('mouseenter', () => {
-        if (isMobile() || activeProject) return;
-        showProject(pid);
-      });
-
-      nameEl.addEventListener('mouseleave', () => {
-        if (isMobile() || activeProject) return;
-        document.getElementById('grid-overlay').classList.remove('active');
-        domItems.forEach(el => { const v = el.querySelector('video'); if (v) v.muted = true; });
-        resetMoodboard();
-      });
-
-      nameEl.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (isMobile()) {
-          if (activeProject === pid) { hideMobileProject(); return; }
-          showMobileProject(pid);
-          return;
-        }
-        if (activeProject === pid) {
-          hideProject();
-        } else {
-          activeProject = pid;
-          showProject(pid);
-        }
-      });
-
-      // mobile nav via image taps — handled in domItems click listener
+    document.getElementById('slide-next-btn').addEventListener('click', () => {
+      currentSlide = (currentSlide + 1) % slides.length;
+      renderSlide();
     });
 
     document.getElementById('open-work').onclick = () => {
       document.getElementById('modal-work').style.display = 'block';
-      if (isMobile()) setupMobileGrid();
-      else setTimeout(layoutDesktop, 60);
+      currentSlide = 0;
+      renderSlide();
     };
 
     document.getElementById('close-work').onclick = () => {
       document.getElementById('modal-work').style.display = 'none';
-      resetMoodboard();
-      document.querySelectorAll('.proj-name').forEach(n => n.classList.remove('active'));
     };
-
-    window.addEventListener('resize', () => {
-      if (isMobile()) {
-        setupMobileGrid();
-      } else if (document.getElementById('modal-work').style.display === 'block') {
-        origPos.length = 0;
-        layoutDesktop();
-      }
-    });
   </script>
 </body>
 </html>
