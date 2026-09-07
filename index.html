@@ -26,24 +26,24 @@
       object-fit: cover; transform: scale(1.1);
     }
     .content-overlay {
-      position: relative; z-index: 1;
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
+      position: fixed; top: 28px; right: 28px;
+      z-index: 2;
+      text-align: right;
     }
-    .text-container { text-align: center; padding: 60px 80px; }
+    .text-container { padding: 0; }
     .text-container h1 {
-      font-size: 2.5rem; font-weight: 350;
-      margin-bottom: 10px; color: #fff; letter-spacing: 8px;
+      font-size: 0.95rem; font-weight: 400;
+      margin-bottom: 8px; color: #fff; letter-spacing: 3px;
     }
     .subtitle {
       font-size: 1rem; font-weight: lighter;
       margin-bottom: 30px; color: #fff;
     }
-    .nav-links { display: flex; gap: 30px; justify-content: center; }
+    .nav-links { display: flex; gap: 30px; justify-content: flex-end; }
     .nav-links button {
-      background: none; border: none; color: #fff; cursor: pointer;
-      font-size: 0.9rem; font-family: 'Work Sans', sans-serif;
-      letter-spacing: 3px; transition: opacity 0.3s;
+      background: none; border: none; color: rgba(255,255,255,0.85); cursor: pointer;
+      font-size: 0.55rem; font-family: 'Work Sans', sans-serif;
+      letter-spacing: 2px; transition: opacity 0.3s; text-transform: lowercase;
     }
     .nav-links button:hover { opacity: 0.6; }
 
@@ -52,38 +52,38 @@
       position: fixed;
       top: 28px; left: 28px;
       z-index: 2;
-      max-width: 260px;
+      max-width: 240px;
       color: rgba(255,255,255,0.85);
     }
     .hero-info p {
-      font-size: 0.55rem;
+      font-size: 0.48rem;
       font-weight: 300;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.3px;
       margin-bottom: 4px;
     }
     .hero-info .hero-tagline {
-      font-size: 0.6rem;
+      font-size: 0.52rem;
       font-weight: 400;
-      letter-spacing: 2px;
+      letter-spacing: 1.8px;
       margin-bottom: 6px;
       color: #fff;
     }
     .hero-info .hero-meta {
-      margin-top: 14px;
+      margin-top: 12px;
       color: rgba(255,255,255,0.6);
     }
     .hero-info a {
       display: block;
       color: rgba(255,255,255,0.85);
       text-decoration: none;
-      font-size: 0.55rem;
+      font-size: 0.48rem;
       font-weight: 300;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.3px;
       margin-bottom: 4px;
       transition: opacity 0.3s;
     }
     .hero-info a:hover { opacity: 0.6; }
-    .hero-info .hero-links { margin-top: 14px; }
+    .hero-info .hero-links { margin-top: 12px; }
 
     /* ── PERMANENT INFO USES ITS OWN STYLES ABOVE; small modal styles removed ── */
 
@@ -200,12 +200,11 @@
 
     /* ── MOBILE ── */
     @media (max-width: 768px) {
-      .text-container { padding: 40px 30px; width: 90%; }
-      .text-container h1 { font-size: 2rem; }
-      .nav-links { flex-direction: column; gap: 15px; }
-      .hero-info { top: 18px; left: 18px; max-width: 200px; }
-      .hero-info p, .hero-info a { font-size: 0.48rem; }
-      .hero-info .hero-tagline { font-size: 0.52rem; }
+      .text-container h1 { font-size: 0.8rem; }
+      .nav-links { flex-direction: row; gap: 15px; }
+      .hero-info { top: 18px; left: 18px; max-width: 190px; }
+      .hero-info p, .hero-info a { font-size: 0.44rem; }
+      .hero-info .hero-tagline { font-size: 0.48rem; }
       .modal-content { padding: 25px; width: 95%; }
       .modal-content p { margin-bottom: 12px; }
 
@@ -229,8 +228,8 @@
   </div>
 
   <div class="hero-info">
-    <p class="hero-tagline">Visual artist and art director</p>
-    <p>Working across concept, styling and installation, with a studio practice in painting, natural pigment and ceramics.</p>
+    <p class="hero-tagline">Visual artist</p>
+    <p>Working across concept, styling and installation, with a studio practice in painting, pigment-making and ceramics.</p>
     <div class="hero-meta">
       <p>b. 1995</p>
       <p>Based in St Leonards-on-Sea / London</p>
