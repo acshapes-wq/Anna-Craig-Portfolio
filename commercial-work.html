@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anna Craig — Commercial Work</title>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Work Sans', sans-serif;
+      letter-spacing: 1.8px;
+      line-height: 1.5;
+      background: #fff;
+      color: #1a1a1a;
+    }
+
+    #close-commercial {
+      position: fixed; top: 28px; right: 28px;
+      background: none; border: none;
+      color: rgba(0,0,0,0.35);
+      font-size: 0.55rem; font-family: 'Work Sans', sans-serif;
+      letter-spacing: 1.8px; cursor: pointer;
+      z-index: 10; transition: opacity 0.3s; text-transform: lowercase;
+    }
+    #close-commercial:hover { opacity: 0.6; }
+
+    .commercial-wrap {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 90px 28px 80px 60px;
+    }
+
+    .commercial-title {
+      font-size: 0.55rem;
+      font-weight: 400;
+      letter-spacing: 1.8px;
+      color: rgba(0,0,0,0.85);
+      text-transform: lowercase;
+      margin-bottom: 40px;
+    }
+
+    .client-block {
+      margin-bottom: 22px;
+    }
+
+    .client-name {
+      font-size: 0.55rem;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      color: rgba(0,0,0,0.85);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .jobs-inline {
+      display: flex;
+      flex-wrap: wrap;
+      row-gap: 2px;
+    }
+
+    .job-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      column-gap: 8px;
+      font-size: 0.5rem;
+      font-weight: 300;
+      letter-spacing: 1px;
+      color: rgba(0,0,0,0.5);
+      line-height: 1.6;
+    }
+
+    .job-name { color: rgba(0,0,0,0.65); }
+    .job-role { color: rgba(0,0,0,0.42); }
+    .job-role::before { content: "—"; margin-right: 8px; color: rgba(0,0,0,0.25); }
+    .job-sep { color: rgba(0,0,0,0.2); margin: 0 4px; }
+
+    @media (max-width: 768px) {
+      .commercial-wrap { padding: 60px 20px 60px; }
+      .jobs-inline { flex-direction: column; }
+      .job-sep { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <button id="close-commercial" onclick="window.history.back()">close</button>
+
+  <div class="commercial-wrap">
+    <div class="commercial-title">commercial work</div>
+
+    <div class="client-block">
+      <span class="client-name">Six Dots Design</span>
+      <div class="jobs-inline">
+        <span class="job-row"><span class="job-name">Not In Service</span><span class="job-role">Solo Creative Direction &amp; Production</span></span><span class="job-sep">·</span>
+        <span class="job-row"><span class="job-name">A Folly Through The Trees</span><span class="job-role">Fabric Installation &amp; Spatial Design</span></span><span class="job-sep">·</span>
+        <span class="job-row"><span class="job-name">Balancing Art</span><span class="job-role">Photography &amp; Creative Direction</span></span><span class="job-sep">·</span>
+        <span class="job-row"><span class="job-name">Lifestyle</span><span class="job-role">Photography &amp; Creative Direction</span></span><span class="job-sep">·</span>
+        <span class="job-row"><span class="job-name">Product Shots</span><span class="job-role">Photography &amp; Creative Direction</span></span>
+      </div>
+    </div>
+
+    <div class="client-block">
+      <span class="client-name">Carousel Jewels</span>
+      <div class="jobs-inline">
+        <span class="job-row"><span class="job-name">Retail Window Installation</span><span class="job-role">Concept, Design &amp; Installation</span></span>
+      </div>
+    </div>
+
+    <div class="client-block">
+      <span class="client-name">Lemon Top Pictures</span>
+      <div class="jobs-inline">
+        <span class="job-row"><span class="job-name">In His Name</span><span class="job-role">Costume Design &amp; Styling</span></span>
+      </div>
+    </div>
+
+    <div class="client-block">
+      <span class="client-name">Just Jump In Production</span>
+      <div class="jobs-inline">
+        <span class="job-row"><span class="job-name">Sol Paradise</span><span class="job-role">Styling &amp; Production Assistant</span></span>
+      </div>
+    </div>
+
+    <div class="client-block">
+      <span class="client-name">st arta</span>
+      <div class="jobs-inline">
+        <span class="job-row"><span class="job-name">The Aztek Shirt</span><span class="job-role">Styling &amp; Location</span></span><span class="job-sep">·</span>
+        <span class="job-row"><span class="job-name">Hunting Stars Collection</span><span class="job-role">Styling &amp; Creative</span></span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
